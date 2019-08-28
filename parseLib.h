@@ -1,6 +1,4 @@
-#ifndef PARSELIB_H
-#define PARSELIB_H
-
+#pragma once
 /*******************************************************************************
 * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
 ******************************************************************************/
@@ -15,6 +13,3 @@ enum parseFSM { INIT, KEY, VALUE, PARAM, ERROR };
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 int parseCmdLine(int argc, char* argv[], pCallback_t p, void* userData);	//Devuelve la cantidad de claves o parametros
-																			//En caso de 
-
-#endif
