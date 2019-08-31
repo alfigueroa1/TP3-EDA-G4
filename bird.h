@@ -5,6 +5,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "types.h"
+#include "point.h"
 
  /*******************************************************************************
   * CLASS PROTOTYPE
@@ -13,20 +14,16 @@ class Bird {
 
 public:
 
-	Bird(uint width, uint height);
+	Bird();
 
 	double getCurrentDir();
 	double getSpeed();
-	//Estos dos prodrian ser una sola funcion segun agus
-	double getX();
-	double getY();
+	Point getPoint();
 
 	void setNewDir(double newDir_);
 	void setCurrentDir(double currentDir_);
 	void setSpeed(double unitsPerTick_);
-	//Set x y set y podrian ser una sola funcion nos dijo Agus
-	void setX(double x_);
-	void setY(double y_);
+	void setPoint(double x_, double y_);
 
 	Bird* createBird(uint birdCount);
 	void moveBird(Bird* birds, uint birdCount, uint width, uint height);
@@ -36,8 +33,7 @@ public:
 
 private:
 
-	double x;
-	double y;
+	Point p;
 	double currentDir;
 	double newDir;
 	double unitsPerTick;

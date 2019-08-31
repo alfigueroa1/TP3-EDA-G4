@@ -7,9 +7,10 @@
 
 
 //Constructor
-Flock::Flock(uint width_, uint height_) {
-	width = width_;
-	height = height_;
+Flock::Flock(uint birdCount_, double eyeSight_, double randomJiggleLimit_) {
+	birdCount = birdCount_;
+	eyeSight = eyeSight_;
+	randomJiggleLimit = randomJiggleLimit_;
 }
 
 //Getters
@@ -17,16 +18,8 @@ Bird Flock::getBird(Bird* birds, uint i) {
 	return birds[i]; 
 }
 
-uint Flock::getSize() {
-	return birdCount;	//Esta bien?
-}
-
-uint Flock::getWidth() { 
-	return width; 
-}
-
-uint Flock::getHeight() {
-	return height; 
+uint Flock::getBirdCount() {
+	return birdCount;
 }
 
 double Flock::getEyeSight() { 

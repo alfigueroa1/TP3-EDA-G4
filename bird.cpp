@@ -18,10 +18,8 @@
 
 
 //Constructores
-Bird::Bird(uint width, uint height) //Vale la pena el constructor?
-{
-	x = (rand() / ((double)RAND_MAX)) * (double)width;
-	y = (rand() / ((double)RAND_MAX)) * (double)height;
+Bird::Bird() {
+	Point p;
 	currentDir = ((double)rand() / (double)(RAND_MAX)) * 360;
 	unitsPerTick = 1;
 
@@ -36,12 +34,8 @@ double Bird::getSpeed() {
 	return unitsPerTick;
 }
 
-double Bird::getX() { 
-	return x; 
-}
-
-double Bird::getY() { 
-	return y; 
+Point Bird::getPoint() {
+	return p;
 }
 
 //Setters
@@ -59,11 +53,9 @@ void Bird::setSpeed(double unitsPerTick_) {
 
 }
 
-void Bird::setX(double x_) { 
-	x = x_; 
-}
-void Bird::setY(double y_) { 
-	y = y_; 
+void Bird::setPoint(double x_, double y_) {
+	p.setX(x_);
+	p.setY(y_);
 }
 
 //Funciones
@@ -78,27 +70,26 @@ void Bird::moveBird(Bird* birds, uint birdCount, uint width, uint height) {
 	
 	for (int i = 0; i < birdCount; i++)
 	{
-		birds[i].setX((birds[i].getX()) + (birds[i].getSpeed()) * (cos(birds[i].getCurrentDir())));
-		birds[i].setY((birds[i].getY()) + (birds[i].getSpeed()) * (sin(birds[i].getCurrentDir())));
+		birds[i].setPoint((birds[i].getPoint().getX()) + (birds[i].getSpeed()) * (cos(birds[i].getCurrentDir())), (birds[i].getPoint().getY()) + (birds[i].getSpeed()) * (sin(birds[i].getCurrentDir())));
 
-		if (birds[i].getX() >= width)
+		if (birds[i].getPoint().getX() >= width)
 		{
-			birds[i].setX((birds[i].getX()) - width);
+			birds[i].getPoint().setX(birds[i].getPoint().getX - width)
 		}
 
-		else if (birds[i].getX() < 0)
+		else if (birds[i].getPoint().getX() < 0)
 		{
-			birds[i].setX((birds[i].getX()) + width);
+			birds[i].getPoint.setX((birds[i].getPoint().getX()) + width);
 		}
 
-		if (birds[i].getY() >= height)
+		if (birds[i].getPoint().getY() >= height)
 		{
-			birds[i].setY((birds[i].getY()) - height);
+			birds[i].getPoint().setY((birds[i].getPoint().getY()) - height);
 		}
 
-		else if (birds[i].getY() < 0)
+		else if (birds[i].getPoint().getY() < 0)
 		{
-			birds[i].setY((birds[i].getY()) + height);
+			birds[i].getPoint().setY((birds[i].getPoint().getY()) + height);
 		}
 
 	}

@@ -9,32 +9,27 @@
  /*******************************************************************************
   * CLASS PROTOTYPE
   ******************************************************************************/
-//Esta bien esta clase? O la hice al re pedo?
+
 class Flock {
 
 public:
 
-	Flock(uint width_, uint height_); //Uso define en vez de los parametros?		//Si este es el constructor, es al pedo width y height
-																					//Pero el constructor deberia setear eyesight y randomjjiglelimit y birdcount
+	Flock(uint birdCount_, double eyeSight_, double randomJiggleLimit_);
 
-	Bird getBird(Bird* birds, uint i);			//Necesaria
-	uint getSize();	//Que devuelve?			//CREO QUE ESTA ES AL PEDO
-	uint getWidth();						//CREO QUE ESTA ES AL PEDO
-	uint getHeight();						//CREO QUE ESTA ES AL PEDO
-	double getEyeSight();					//Esta es necesaria
-	double getRandomJiggleLimit();			//Esta tmb
+	Bird getBird(Bird* birds, uint i);
+	uint getBirdCount();
+	double getEyeSight();
+	double getRandomJiggleLimit();
 
-	void setEyeSight(double eyeSight_);		//Buena
-	void setRandomJiggleLimit(double randomJiggleLimit_);		//Buenarda
-	void setBirdCount(uint birdCount_);							//Me gusta
+	void setEyeSight(double eyeSight_);	
+	void setRandomJiggleLimit(double randomJiggleLimit_);
+	void setBirdCount(uint birdCount_);
 
 private:
 
-	uint width;								//al pedo
-	uint height;							//al pedo
-	double eyeSight; //Van aca o en Bird?				Aca
-	double randomJiggleLimit; //Van aca o en Bird?		aca
-	uint birdCount; //Necesario?						Si
+	double eyeSight;
+	double randomJiggleLimit;
+	uint birdCount;
 	Bird* birds;
 
 };
