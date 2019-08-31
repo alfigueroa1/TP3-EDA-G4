@@ -1,26 +1,36 @@
 #ifndef BIRD_H
 #define BIRD_H
 
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+#include "types.h"
+
+ /*******************************************************************************
+  * CLASS PROTOTYPE
+  ******************************************************************************/
 class Bird {
 
 public:
 
-	Bird();
+	Bird(uint width, uint height);
 
 	double getCurrentDir();
 	double getSpeed();
 	double getX();
 	double getY();
 
-	void setNewDir(double newDir_, double randomJiggleLimit);
+	void setNewDir(double newDir_);
+	void setCurrentDir(double currentDir_);
 	void setSpeed(double unitsPerTick_);
 	void setX(double x_);
 	void setY(double y_);
 
-	void createBird();
+	Bird* createBird(uint birdCount);
 	void moveBird(Bird* birds, uint birdCount, uint width, uint height);
 	void updateDir(Flock& f);
 	void updateSpeed(Bird* birds, uint birdCount);
+	void randSpeed(Bird* birds, uint birdCount);
 
 private:
 

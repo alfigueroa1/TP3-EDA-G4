@@ -1,15 +1,23 @@
 #ifndef FLOCK_H
 #define FLOCK_H
 
-typedef unsigned int uint;
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+#include "types.h"
 
+ /*******************************************************************************
+  * CLASS PROTOTYPE
+  ******************************************************************************/
+//Esta bien esta clase? O la hice al re pedo?
 class Flock {
 
 public:
 
+	Flock(uint width_, uint height_); //Uso define en vez de los parametros?
 
-	Bird getBird(uint i);
-	getSize();
+	Bird getBird(Bird* birds, uint i);
+	uint getSize();	//Que devuelve?
 	uint getWidth();
 	uint getHeight();
 	double getEyeSight();
@@ -23,11 +31,12 @@ private:
 
 	uint width;
 	uint height;
-	double eyeSight;
-	double randomJiggleLimit;
-	uint birdCount;
+	double eyeSight; //Van aca o en Bird?
+	double randomJiggleLimit; //Van aca o en Bird?
+	uint birdCount; //Necesario?
 	Bird* birds;
 
 };
+
 #endif // FLOCK_H
 

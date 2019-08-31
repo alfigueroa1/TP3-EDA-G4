@@ -1,17 +1,24 @@
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
 #include <stdio.h>
 #include "flock.h"
 #include "bird.h"
 
 
 //Constructor
-
-Bird Flock::getBird(uint i) { 
-	return; 
+Flock::Flock(uint width_, uint height_) {
+	width = width_;
+	height = height_;
 }
 
 //Getters
-Flock::getSize() {
+Bird Flock::getBird(Bird* birds, uint i) { 
+	return birds[i]; 
+}
 
+uint Flock::getSize() {
+	return birdCount;	//Esta bien?
 }
 
 uint Flock::getWidth() { 

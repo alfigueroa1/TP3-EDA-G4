@@ -13,9 +13,9 @@
 #include <math.h>
 #include "parseCallback.h"
 
-  /*******************************************************************************
-   * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
-   ******************************************************************************/
+/*******************************************************************************
+* CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+******************************************************************************/
 #define NRO_CLAVES	4
 #define INVALID		-1
 
@@ -23,9 +23,9 @@
 #define TIPOS		1
 #define LISTAS		2
 
-   /*******************************************************************************
-   * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
-   ******************************************************************************/
+/*******************************************************************************
+* ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+******************************************************************************/
 typedef const char* lista_t[];	//arreglo de punteros a string
 typedef lista_t* pToLista_t[];	//arreglo de punteros a arreglos de punteros a string
 
