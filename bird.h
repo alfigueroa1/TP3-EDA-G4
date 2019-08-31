@@ -17,12 +17,14 @@ public:
 
 	double getCurrentDir();
 	double getSpeed();
+	//Estos dos prodrian ser una sola funcion segun agus
 	double getX();
 	double getY();
 
 	void setNewDir(double newDir_);
 	void setCurrentDir(double currentDir_);
 	void setSpeed(double unitsPerTick_);
+	//Set x y set y podrian ser una sola funcion nos dijo Agus
 	void setX(double x_);
 	void setY(double y_);
 

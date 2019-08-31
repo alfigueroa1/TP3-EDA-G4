@@ -14,26 +14,27 @@ class Flock {
 
 public:
 
-	Flock(uint width_, uint height_); //Uso define en vez de los parametros?
+	Flock(uint width_, uint height_); //Uso define en vez de los parametros?		//Si este es el constructor, es al pedo width y height
+																					//Pero el constructor deberia setear eyesight y randomjjiglelimit y birdcount
 
-	Bird getBird(Bird* birds, uint i);
-	uint getSize();	//Que devuelve?
-	uint getWidth();
-	uint getHeight();
-	double getEyeSight();
-	double getRandomJiggleLimit();
+	Bird getBird(Bird* birds, uint i);			//Necesaria
+	uint getSize();	//Que devuelve?			//CREO QUE ESTA ES AL PEDO
+	uint getWidth();						//CREO QUE ESTA ES AL PEDO
+	uint getHeight();						//CREO QUE ESTA ES AL PEDO
+	double getEyeSight();					//Esta es necesaria
+	double getRandomJiggleLimit();			//Esta tmb
 
-	void setEyeSight(double eyeSight_);
-	void setRandomJiggleLimit(double randomJiggleLimit_);
-	void setBirdCount(uint birdCount_);
+	void setEyeSight(double eyeSight_);		//Buena
+	void setRandomJiggleLimit(double randomJiggleLimit_);		//Buenarda
+	void setBirdCount(uint birdCount_);							//Me gusta
 
 private:
 
-	uint width;
-	uint height;
-	double eyeSight; //Van aca o en Bird?
-	double randomJiggleLimit; //Van aca o en Bird?
-	uint birdCount; //Necesario?
+	uint width;								//al pedo
+	uint height;							//al pedo
+	double eyeSight; //Van aca o en Bird?				Aca
+	double randomJiggleLimit; //Van aca o en Bird?		aca
+	uint birdCount; //Necesario?						Si
 	Bird* birds;
 
 };
