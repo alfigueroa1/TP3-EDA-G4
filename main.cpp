@@ -28,6 +28,20 @@ int main(int argc, char** argv) {
 
 	if (checkInputs(argc, argv, pToCallback, &inputData) == 0)
 		return 0;
+
+	/*********************************************************
+	*		MAIN TENTATIVO
+	**********************************************************/
+/*	//Llamar constructor de flock con los datos
+	//Construir birds segun datos
+	//while(run){
+		graph();
+		simulationStep();
+		getKeyboard();			?
+	}
+	*/
+
+
 	printf("CORRECT EXECUTION!\n");
 	return 0;
 }

@@ -65,5 +65,11 @@
     <ClInclude Include="frontend.h">
       <Filter>Header Files\frontend</Filter>
     </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>Header Files\frontend</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
