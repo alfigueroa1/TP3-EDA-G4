@@ -11,16 +11,17 @@
  /*******************************************************************************
   * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
   ******************************************************************************/
-
-static int checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData);
-static void printHelpText();
-
+static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData);
+static void printHelpText(void);
 /*********************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
 int main(int argc, char** argv) {
 	pCallback_t pToCallback = parseCallback;
 	userData_t inputData;
+
+	if (!initializeFrontend())
+		return 0;
 
 	srand((unsigned int)time(NULL));
 
@@ -34,8 +35,8 @@ int main(int argc, char** argv) {
  /*********************************************************************************
 						LOCAL FUNCTION DEFINITIONS
  *********************************************************************************/
-static int checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData) {
-	int ret = 0;
+static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData) {
+	bool ret = 0;
 	if (parseCmdLine(argc, argv, pToCallback, inputData) == -1)
 		printf("INPUT ERROR\n");
 	else if (inputData->birds == ERR_CODE)
