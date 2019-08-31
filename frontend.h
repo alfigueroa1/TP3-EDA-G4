@@ -16,6 +16,8 @@
 
 #define DRAWABLES 1
 
+#define CROW_CENTER 15
+
 #define FPS	60
  /*******************************************************************************
   * ENUMERATIONS AND STRUCTURES AND TYPEDEFS

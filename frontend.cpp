@@ -16,10 +16,9 @@
 #include "frontend.h"
 /*******************************************************************************
                   CONSTANT AND MACRO DEFINITIONS USING #DEFINE
-
  ******************************************************************************/
+#define PI	3.14159265
 
- 
  /*******************************************************************************
 * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
 ******************************************************************************/
@@ -31,20 +30,9 @@ enum {CROW};
 int handleSimGraph(Flock* flock) {
 	uint birdCount = getBirdCount(flock);
 	Bird* bird = getBird(flock);
-	tileType* Piso = getSimFloor(sim);
 
 	bool ok = true;
-	uint displayWidth, displayHeight;
-
-	if (width > height) {																//El tamaño y forma de la pantalla se adaptan a la cantidad de baldosas
-		displayWidth = (uint)DISP_MAX_SIZE;
-		displayHeight = (uint)((double)height / (double)width * DISP_MAX_SIZE);
-	}
-	else {
-		displayWidth = (uint)((double)width / (double)height * DISP_MAX_SIZE);
-		displayHeight = (uint)DISP_MAX_SIZE;
-	}
-
+	
 	ALLEGRO_DISPLAY* display = NULL;							//Se crean los elementos necesarios para que funcione Allegro
 	ALLEGRO_BITMAP* drawList[DRAWABLES];
 	ALLEGRO_FONT* font = NULL;
@@ -62,7 +50,7 @@ int handleSimGraph(Flock* flock) {
 	}
 
 	timer = al_create_timer(1.0 / FPS);								//Se inicializan y cargan los elementos
-	display = al_create_display(displayWidth, displayHeight);
+	display = al_create_display(SCREEN_W, SCREEN_H);
 	if (!init_drawables(drawList)) {
 		ok = false;
 		printf("Failed to initialize Bitmaps!\n");
@@ -94,30 +82,13 @@ int handleSimGraph(Flock* flock) {
 
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 
-			drawFloor(drawList, Piso, width, height, displayWidth, displayHeight);			//dibuja el piso
-			drawRobots(drawList, Roomba, robotCount, displayWidth / width);					//dibuja los robots
+			//drawHUD()
+			//drawBirds()
 
-			if (isSimOver(sim) == true) {													//si los robots terminaron de limpiar, muestra el cartel que indica esto
-				printf("Simulacion completa luego de %d ticks\n", getSimTicks(sim));
-				if (displayWidth > displayHeight) {											//el cartel se adapta a la forma de la pantalla
-					al_draw_scaled_bitmap(drawList[ALL_CLEAN], 0, 0, 276, 306, displayWidth / 2 - (displayHeight - AXIS) / 2, displayHeight / 2 - (displayHeight - AXIS) / 2, displayHeight - AXIS, displayHeight - AXIS, 0);
-				}
-				else {
-					al_draw_scaled_bitmap(drawList[ALL_CLEAN], 0, 0, 276, 306, AXIS / 2, displayHeight / 2 - (displayWidth - AXIS) / 2, displayWidth - AXIS, displayWidth - AXIS, 0);
-				}
-				once = false;
-			}
-			else {
-				simulationStep(sim);														//si el piso sigue sucio, sigue limpiando
-			}
-
-			/******************************/
-
+			//simStep();
 			al_flip_display();																//se grafica la pantalla
 		}
 	}
-
-	destroySim(sim);																		//destruye todo
 
 	al_destroy_timer(timer);
 	al_destroy_display(display);
@@ -242,7 +213,33 @@ int init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
 	return r;
 }
 
+void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
+	for (uint i = 0; i < DRAWABLES; i++)
+		al_destroy_bitmap(drawList[i]);
+	return;
+}
+
 void handleKeyboard() {
 	
+	return;
+}
+
+void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Bird* bird, uint birdCount, uint rSize) {
+	for (uint i = 0; i < birdCount; i++) {
+		//al_draw_bitmap(drawList[CROW], bird->getX(), bird->getY, 0);
+		//al_draw_rotated_bitmap(drawList[CROW], CROW_CENTER, CROW_CENTER, bird->getX(), bird->getY, (bird->getCurrentDir()*PI/180.0), 0);
+	}
+	return;
+}
+
+void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
+	
+
+	al_draw_filled_rectangle(0, 0, WORLD_W, UPPER_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro superior
+	al_draw_filled_rectangle(0, WORLD_H - LOWER_H, WORLD_W, WORLD_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
+	al_flip_display();
+
+	al_draw_text(font, al_map_rgb(255, 255, 255), AXIS - 70, , 0, "Average");
+
 	return;
 }

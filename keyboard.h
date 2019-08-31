@@ -19,7 +19,7 @@
    * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
    ******************************************************************************/
 enum MYKEYS {
-	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_ENTER, KEY_SPACE, KEY_BACKSPACE //arrow keys
+	KEY_UP, KEY_DOWN, KEY_1, KEY_2, KEY_Q, KEY_W, KEY_LEFT, KEY_RIGHT //arrow keys
 };
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
