@@ -7,6 +7,7 @@
 #include <time.h>
 #include "parseCallback.h"
 #include "parseLib.h"
+#include "frontend.h"
 
  /*******************************************************************************
   * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
