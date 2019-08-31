@@ -1,7 +1,7 @@
 /***************************************************************************//**
   @file     +parseCallback.cpp+
   @brief    +valida las entradas del usuario por consola y guarda los datos en la estructura dada.+
-  @author   +Grupo 1. TP2.+
+  @author   +Grupo 4. TP3.+
  ******************************************************************************/
 
  /*******************************************************************************
