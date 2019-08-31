@@ -13,10 +13,11 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
- /*******************************************************************************
-  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
-  ******************************************************************************/
-#define SPACE           3
+#include "flock.h"
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
+#define KEYS           8
 #define FPS             60.0
   /*******************************************************************************
    * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -27,5 +28,6 @@ enum MYKEYS {
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
+void handleKeyInputs(bool keyPressed[KEYS], Flock* flock);
+void handleKeyPress(ALLEGRO_EVENT& ev, bool keyPressed[KEYS], bool down, bool& ok);
 
-void handle_keyboard(ALLEGRO_TIMER* timer, ALLEGRO_EVENT_QUEUE* event_queue);

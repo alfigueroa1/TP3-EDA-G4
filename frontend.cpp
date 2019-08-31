@@ -14,6 +14,7 @@
 #include "bird.h"
 #include "types.h"
 #include "frontend.h"
+#include "keyboard.h"
 /*******************************************************************************
                   CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -44,6 +45,7 @@ bool handleBirdGraph(Flock* flock) {
 	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
 	ALLEGRO_TIMER* timer = NULL;
 	bool redraw = true, once = true;
+	bool keyPressed[KEYS] = { false, false, false, false, false, false, false, false };
 
 	font = al_load_ttf_font("BebasNeue_Regular.ttf", 20, 0);
 	if (!font) {
@@ -71,11 +73,18 @@ bool handleBirdGraph(Flock* flock) {
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
+			//poner las consecuencias del teclado
+			handleKeyInputs(keyPressed, flock);
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
-
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+			handleKeyPress(ev, keyPressed, true, ok);
+		}
+		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
+			handleKeyPress(ev, keyPressed, false, ok);
+		}
 		if (redraw && al_is_event_queue_empty(event_queue) && once) {
 			redraw = false;
 
@@ -99,92 +108,6 @@ bool handleBirdGraph(Flock* flock) {
 	return ok;
 
 }
-/*
-void handle_keyboard() {
-	bool key_pressed[7] = { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE };
-	ALLEGRO_EVENT ev;
-	
-	if (al_get_next_event(event_queue, &ev)) {
-		if (ev.type == ALLEGRO_EVENT_TIMER) {
-			if (object_list[GAMESTATE_ID].state == PLAY_GAME) {
-				if (key_pressed[KEY_UP])
-					shoot((object_list + BULLET_ID), object_list + TANK_ID);
-				if (key_pressed[KEY_LEFT])
-					(object_list[TANK_ID].direction) = 'L';
-				else if (key_pressed[KEY_RIGHT])
-					(object_list[TANK_ID].direction) = 'R';
-				else
-					(object_list[TANK_ID].direction) = 'S';
-				if (key_pressed[KEY_ENTER]) {
-					object_list[GAMESTATE_ID].speed = KEY_ENTER; usleep(10000);
-				}
-				else
-					object_list[GAMESTATE_ID].speed = -1;
-			}
-			if (object_list[GAMESTATE_ID].state != PLAY_GAME) {
-				if (key_pressed[KEY_ENTER]) {
-					object_list[GAMESTATE_ID].speed = KEY_ENTER; usleep(10000); /*object_list[GAMESTATE_ID].speed = -1;
-				}
-				else if (key_pressed[KEY_DOWN]) {
-					object_list[GAMESTATE_ID].speed = KEY_DOWN;  usleep(10000);
-				}
-				else if (key_pressed[KEY_UP]) {
-					object_list[GAMESTATE_ID].speed = KEY_UP;    usleep(10000);
-				}
-				else if (key_pressed[KEY_LEFT]) {
-					object_list[GAMESTATE_ID].speed = KEY_LEFT;    usleep(10000);
-				}
-				else if (key_pressed[KEY_RIGHT]) {
-					object_list[GAMESTATE_ID].speed = KEY_RIGHT;    usleep(10000);
-				}
-				else if (key_pressed[KEY_BACKSPACE]) {
-					object_list[GAMESTATE_ID].speed = KEY_BACKSPACE;    usleep(10000);
-				}
-				else
-					object_list[GAMESTATE_ID].speed = -1;
-			}
-		}
-		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-			switch (ev.keyboard.keycode) {
-			case ALLEGRO_KEY_UP:
-				key_pressed[KEY_UP] = TRUE;        break;
-			case ALLEGRO_KEY_DOWN:
-				key_pressed[KEY_DOWN] = TRUE;       break;
-			case ALLEGRO_KEY_LEFT:
-				key_pressed[KEY_LEFT] = TRUE;       break;
-			case ALLEGRO_KEY_RIGHT:
-				key_pressed[KEY_RIGHT] = TRUE;      break;
-			case ALLEGRO_KEY_ENTER:
-				key_pressed[KEY_ENTER] = TRUE;      break;
-			case ALLEGRO_KEY_SPACE:
-				key_pressed[KEY_SPACE] = TRUE;      break;
-			case ALLEGRO_KEY_BACKSPACE:
-				key_pressed[KEY_BACKSPACE] = TRUE;  break;
-			}
-		}
-		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
-			switch (ev.keyboard.keycode) {
-			case ALLEGRO_KEY_UP:
-				key_pressed[KEY_UP] = FALSE;        break;
-			case ALLEGRO_KEY_DOWN:
-				key_pressed[KEY_DOWN] = FALSE;      break;
-			case ALLEGRO_KEY_LEFT:
-				key_pressed[KEY_LEFT] = FALSE;      break;
-			case ALLEGRO_KEY_RIGHT:
-				key_pressed[KEY_RIGHT] = FALSE;     break;
-			case ALLEGRO_KEY_ENTER:
-				key_pressed[KEY_ENTER] = FALSE;     break;
-			case ALLEGRO_KEY_SPACE:
-				key_pressed[KEY_SPACE] = FALSE;     break;
-			case ALLEGRO_KEY_BACKSPACE:
-				key_pressed[KEY_BACKSPACE] = FALSE; break;
-			case ALLEGRO_KEY_ESCAPE:
-				*system_running = FALSE;            break;
-			}
-		}
-	}
-	return;
-}*/
 
 bool initializeFrontend() {
 	bool ret = 0;

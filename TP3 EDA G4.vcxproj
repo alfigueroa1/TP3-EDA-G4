@@ -139,6 +139,7 @@
     <ClCompile Include="bird.cpp" />
     <ClCompile Include="flock.cpp" />
     <ClCompile Include="frontend.cpp" />
+    <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parseCallback.cpp" />
     <ClCompile Include="parseLib.cpp" />
