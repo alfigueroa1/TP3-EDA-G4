@@ -9,33 +9,123 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+
+#include "flock.h"
+#include "bird.h"
+#include "types.h"
 #include "frontend.h"
 /*******************************************************************************
                   CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+
  ******************************************************************************/
+
+ 
+ /*******************************************************************************
+* ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+******************************************************************************/
+enum {CROW};
 
 /*********************************************************************************
 						  GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
-void frontend() {
-	ALLEGRO_DISPLAY* display = NULL;
-	//ALLEGRO_BITMAP **draw_list = malloc()
-	ALLEGRO_TIMER* timer = NULL;
-	ALLEGRO_EVENT_QUEUE* event_queue;
+int handleSimGraph(Flock* flock) {
+	uint birdCount = getBirdCount(flock);
+	Bird* bird = getBird(flock);
+	tileType* Piso = getSimFloor(sim);
 
-	timer = al_create_timer(1.0/FPS);
-	if (timer == NULL) {
-		printf("Failed to create TIMER\n");
-		return;
+	bool ok = true;
+	uint displayWidth, displayHeight;
+
+	if (width > height) {																//El tamaño y forma de la pantalla se adaptan a la cantidad de baldosas
+		displayWidth = (uint)DISP_MAX_SIZE;
+		displayHeight = (uint)((double)height / (double)width * DISP_MAX_SIZE);
 	}
+	else {
+		displayWidth = (uint)((double)width / (double)height * DISP_MAX_SIZE);
+		displayHeight = (uint)DISP_MAX_SIZE;
+	}
+
+	ALLEGRO_DISPLAY* display = NULL;							//Se crean los elementos necesarios para que funcione Allegro
+	ALLEGRO_BITMAP* drawList[DRAWABLES];
+	ALLEGRO_FONT* font = NULL;
+	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
+	ALLEGRO_TIMER* timer = NULL;
+	bool redraw = true, once = true;
+
+	if (!al_init()) {											//Se inicializan los addons de Allegro
+		ok = false;
+		printf("Failed to initialize Allegro!\n");
+	}
+	if (!al_init_image_addon()) {
+		ok = false;
+		printf("Failed to initialize Image Addon!\n");
+	}
+
+	timer = al_create_timer(1.0 / FPS);								//Se inicializan y cargan los elementos
+	display = al_create_display(displayWidth, displayHeight);
+	if (!init_drawables(drawList)) {
+		ok = false;
+		printf("Failed to initialize Bitmaps!\n");
+	}
+
 	event_queue = al_create_event_queue();
-	if (event_queue == NULL) {
-		printf("Failed to create EVENT QUEUE\n");
-		al_destroy_timer(timer);
-		return;
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+	al_flip_display();
+	al_start_timer(timer);
+
+	while (ok)
+	{
+		ALLEGRO_EVENT ev;													//se fija si el usuario quiere cerrar el display
+		al_wait_for_event(event_queue, &ev);
+
+		if (ev.type == ALLEGRO_EVENT_TIMER) {
+			redraw = true;
+		}
+		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			break;
+		}
+
+		if (redraw && al_is_event_queue_empty(event_queue) && once) {
+			redraw = false;
+
+			/****** Dibujar en pantalla acá ******/
+
+			al_clear_to_color(al_map_rgb(0, 0, 0));
+
+			drawFloor(drawList, Piso, width, height, displayWidth, displayHeight);			//dibuja el piso
+			drawRobots(drawList, Roomba, robotCount, displayWidth / width);					//dibuja los robots
+
+			if (isSimOver(sim) == true) {													//si los robots terminaron de limpiar, muestra el cartel que indica esto
+				printf("Simulacion completa luego de %d ticks\n", getSimTicks(sim));
+				if (displayWidth > displayHeight) {											//el cartel se adapta a la forma de la pantalla
+					al_draw_scaled_bitmap(drawList[ALL_CLEAN], 0, 0, 276, 306, displayWidth / 2 - (displayHeight - AXIS) / 2, displayHeight / 2 - (displayHeight - AXIS) / 2, displayHeight - AXIS, displayHeight - AXIS, 0);
+				}
+				else {
+					al_draw_scaled_bitmap(drawList[ALL_CLEAN], 0, 0, 276, 306, AXIS / 2, displayHeight / 2 - (displayWidth - AXIS) / 2, displayWidth - AXIS, displayWidth - AXIS, 0);
+				}
+				once = false;
+			}
+			else {
+				simulationStep(sim);														//si el piso sigue sucio, sigue limpiando
+			}
+
+			/******************************/
+
+			al_flip_display();																//se grafica la pantalla
+		}
 	}
-	
-	return;
+
+	destroySim(sim);																		//destruye todo
+
+	al_destroy_timer(timer);
+	al_destroy_display(display);
+	destroy_drawables(drawList);
+	al_destroy_event_queue(event_queue);
+
+	return ok;
+
 }
 
 void handle_keyboard() {
@@ -138,6 +228,18 @@ bool initializeFrontend() {
 	else
 		ret = 1;
 	return ret;
+}
+
+int init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
+	int r = true;
+	//cargo todas las imagenes
+	drawList[CROW] = al_load_bitmap("crow.png");
+	if (drawList[CROW] == NULL) {
+		fprintf(stderr, "failed to load CROW!\n");
+		al_destroy_bitmap(drawList[CROW]);
+		r = false;
+	}
+	return r;
 }
 
 void handleKeyboard() {
