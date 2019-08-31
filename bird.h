@@ -5,7 +5,6 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "types.h"
-#include "point.h"
 
  /*******************************************************************************
   * CLASS PROTOTYPE
@@ -18,22 +17,25 @@ public:
 
 	double getCurrentDir();
 	double getSpeed();
-	Point getPoint();
+	double getX();
+	double getY();
 
 	void setNewDir(double newDir_);
 	void setCurrentDir(double currentDir_);
 	void setSpeed(double unitsPerTick_);
-	void setPoint(double x_, double y_);
+	void setX(double x_);
+	void setY(double y_);
 
-	Bird* createBird(uint birdCount);
-	void moveBird(Bird* birds, uint birdCount, uint width, uint height);
+	Bird* createBird(Flock& f);
+	void moveBird(Flock& f);
 	void updateDir(Flock& f);
-	void updateSpeed(Bird* birds, uint birdCount);
-	void randSpeed(Bird* birds, uint birdCount);
+	void updateSpeed(Flock& f, int direction);
+	void randSpeed(Flock& f);
 
 private:
 
-	Point p;
+	double x;
+	double y;
 	double currentDir;
 	double newDir;
 	double unitsPerTick;
