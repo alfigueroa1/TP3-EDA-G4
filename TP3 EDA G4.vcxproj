@@ -123,11 +123,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bird.cpp" />
+    <ClCompile Include="flock.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parseCallback.cpp" />
     <ClCompile Include="parseLib.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bird.h" />
+    <ClInclude Include="flock.h" />
     <ClInclude Include="parseCallback.h" />
     <ClInclude Include="parseLib.h" />
   </ItemGroup>

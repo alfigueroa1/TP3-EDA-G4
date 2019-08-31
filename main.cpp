@@ -11,8 +11,10 @@
  /*******************************************************************************
   * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
   ******************************************************************************/
+
 static int checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData);
 static void printHelpText();
+
 /*********************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/

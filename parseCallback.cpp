@@ -1,7 +1,7 @@
 /***************************************************************************//**
   @file     +parseCallback.cpp+
   @brief    +valida las entradas del usuario por consola y guarda los datos en la estructura dada.+
-  @author   +Grupo 1. TP2.+
+  @author   +Grupo 4. TP3.+
  ******************************************************************************/
 
  /*******************************************************************************
@@ -36,6 +36,7 @@ static int check(const char* palabra, const char* lista[], int items);
 static int adminKeys(int* ptKeyPlace, userData_t* pointerData);
 static int checkForZero(char* cadena);
 static int saveNumber(userData_t* pointerData, int opNumber, double number);
+
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
