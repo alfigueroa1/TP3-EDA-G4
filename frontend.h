@@ -14,6 +14,8 @@
 #define SCREEN_H	(WORLD_H + UPPER_H + LOWER_H)
 #define SCREEN_W	WORLD_W
 
+#define DRAWABLES 1
+
 #define FPS	60
  /*******************************************************************************
   * ENUMERATIONS AND STRUCTURES AND TYPEDEFS

@@ -25,4 +25,4 @@ enum MYKEYS {
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-void handle_keyboard(ALLEGRO_TIMER* timer, ALLEGRO_EVENT_QUEUE* event_queue, object_t object_list[MAX_OBJECTS], bool* system_running);
+void handle_keyboard(ALLEGRO_TIMER* timer, ALLEGRO_EVENT_QUEUE* event_queue);
