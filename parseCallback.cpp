@@ -36,6 +36,7 @@ static int check(const char* palabra, const char* lista[], int items);
 static int adminKeys(int* ptKeyPlace, userData_t* pointerData);
 static int checkForZero(char* cadena);
 static int saveNumber(userData_t* pointerData, int opNumber, double number);
+
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
