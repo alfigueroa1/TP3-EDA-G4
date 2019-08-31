@@ -2,7 +2,10 @@
 /***************************************************************************//**
   @file     +keyboard.h+
   @brief    +Contiene manejo y recepcion del teclado en Allegro+
-  @author   +Grupo 2: Alejo Figueroa, Olivia de Vincenti, Pablo Gonzalez+
+  @author   +Grupo 4+
+ ******************************************************************************/
+/*******************************************************************************
+ *				INCLUDE HEADER FILES
  ******************************************************************************/
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>

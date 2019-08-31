@@ -23,13 +23,18 @@
 * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
 ******************************************************************************/
 enum {CROW};
-
+/*******************************************************************************
+ * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+static bool init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]);
+static void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]);
+static void drawHUD(Flock* flock, ALLEGRO_FONT* font);
 /*********************************************************************************
 						  GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
-int handleSimGraph(Flock* flock) {
-	uint birdCount = getBirdCount(flock);
-	Bird* bird = getBird(flock);
+bool handleBirdGraph(Flock* flock) {
+	//uint birdCount = flock.getBirdCount();
+	//Bird* bird = flock.getBird();
 
 	bool ok = true;
 	
@@ -40,15 +45,11 @@ int handleSimGraph(Flock* flock) {
 	ALLEGRO_TIMER* timer = NULL;
 	bool redraw = true, once = true;
 
-	if (!al_init()) {											//Se inicializan los addons de Allegro
+	font = al_load_ttf_font("BebasNeue_Regular.ttf", 20, 0);
+	if (!font) {
+		printf("Failed to load font!\n");
 		ok = false;
-		printf("Failed to initialize Allegro!\n");
 	}
-	if (!al_init_image_addon()) {
-		ok = false;
-		printf("Failed to initialize Image Addon!\n");
-	}
-
 	timer = al_create_timer(1.0 / FPS);								//Se inicializan y cargan los elementos
 	display = al_create_display(SCREEN_W, SCREEN_H);
 	if (!init_drawables(drawList)) {
@@ -80,9 +81,9 @@ int handleSimGraph(Flock* flock) {
 
 			/****** Dibujar en pantalla acá ******/
 
-			al_clear_to_color(al_map_rgb(0, 0, 0));
+			al_clear_to_color(al_map_rgb(100, 100, 255));
 
-			//drawHUD()
+			drawHUD(flock, font);
 			//drawBirds()
 
 			//simStep();
@@ -98,7 +99,7 @@ int handleSimGraph(Flock* flock) {
 	return ok;
 
 }
-
+/*
 void handle_keyboard() {
 	bool key_pressed[7] = { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE };
 	ALLEGRO_EVENT ev;
@@ -122,7 +123,7 @@ void handle_keyboard() {
 			}
 			if (object_list[GAMESTATE_ID].state != PLAY_GAME) {
 				if (key_pressed[KEY_ENTER]) {
-					object_list[GAMESTATE_ID].speed = KEY_ENTER; usleep(10000); /*object_list[GAMESTATE_ID].speed = -1;*/
+					object_list[GAMESTATE_ID].speed = KEY_ENTER; usleep(10000); /*object_list[GAMESTATE_ID].speed = -1;
 				}
 				else if (key_pressed[KEY_DOWN]) {
 					object_list[GAMESTATE_ID].speed = KEY_DOWN;  usleep(10000);
@@ -142,7 +143,6 @@ void handle_keyboard() {
 				else
 					object_list[GAMESTATE_ID].speed = -1;
 			}
-			//object_list[GAMESTATE_ID].speed = -1;
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 			switch (ev.keyboard.keycode) {
@@ -184,7 +184,7 @@ void handle_keyboard() {
 		}
 	}
 	return;
-}
+}*/
 
 bool initializeFrontend() {
 	bool ret = 0;
@@ -201,8 +201,11 @@ bool initializeFrontend() {
 	return ret;
 }
 
-int init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
-	int r = true;
+/*********************************************************************************
+						  LOCAL FUNCTION DEFINITIONS
+ ********************************************************************************/
+static bool init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
+	bool r = true;
 	//cargo todas las imagenes
 	drawList[CROW] = al_load_bitmap("crow.png");
 	if (drawList[CROW] == NULL) {
@@ -213,7 +216,7 @@ int init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
 	return r;
 }
 
-void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
+static void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
 	for (uint i = 0; i < DRAWABLES; i++)
 		al_destroy_bitmap(drawList[i]);
 	return;
@@ -224,7 +227,7 @@ void handleKeyboard() {
 	return;
 }
 
-void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Bird* bird, uint birdCount, uint rSize) {
+static void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Bird* bird, uint birdCount, uint rSize) {
 	for (uint i = 0; i < birdCount; i++) {
 		//al_draw_bitmap(drawList[CROW], bird->getX(), bird->getY, 0);
 		//al_draw_rotated_bitmap(drawList[CROW], CROW_CENTER, CROW_CENTER, bird->getX(), bird->getY, (bird->getCurrentDir()*PI/180.0), 0);
@@ -232,14 +235,29 @@ void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Bird* bird, uint birdCount, 
 	return;
 }
 
-void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
+static void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
 	
 
 	al_draw_filled_rectangle(0, 0, WORLD_W, UPPER_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro superior
 	al_draw_filled_rectangle(0, WORLD_H - LOWER_H, WORLD_W, WORLD_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
 	al_flip_display();
 
-	al_draw_text(font, al_map_rgb(255, 255, 255), AXIS - 70, , 0, "Average");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Bird Count:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 20, 0, "Mode:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 40, 0, "Speed (Mode 1 Only):");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W/2, 0, 0, "Random Jiggle Limit:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 20, 0, "Eye Sight:");
+
+	al_draw_text(font, al_map_rgb(255, 255, 255), 0, WORLD_H - LOWER_H, 0, "Controls:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 40, WORLD_H - LOWER_H, 0, "-1 or 2 for MODE:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 40, WORLD_H - LOWER_H +20, 0, "UP: Speed Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 40, WORLD_H - LOWER_H +40, 0, "DOWN: Speed Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 0, 0, "LEFT: Eye Sight Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 20, 0, "RIGHT: Eye Sight Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 40, 0, "Q: Random Jiggle Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 60, 0, "W: Random Jiggle Up");
+
+
 
 	return;
 }
