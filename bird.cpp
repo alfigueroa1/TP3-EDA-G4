@@ -74,7 +74,7 @@ void Bird::moveBird(Bird* birds, uint birdCount, uint width, uint height) {
 
 		if (birds[i].getPoint().getX() >= width)
 		{
-			birds[i].getPoint().setX(birds[i].getPoint().getX - width)
+			birds[i].getPoint().setX(birds[i].getPoint().getX - width);
 		}
 
 		else if (birds[i].getPoint().getX() < 0)
