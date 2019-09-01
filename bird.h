@@ -5,7 +5,6 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 #include "types.h"
-//#include "flock.h"
 
  /*******************************************************************************
   * CLASS PROTOTYPE
@@ -24,7 +23,13 @@ public:
 	void setSpeed(double unitsPerTick_);
 	void setX(double x_);
 	void setY(double y_);
-	//bool isInSight(const Bird& b, uint width, uint height, double eyeSight);
+
+	Bird* createBird(Bird* birds, uint birdCount);
+	void moveBird(Bird* birds, uint birdCount);
+	void updateDir(Bird* birds, uint birdCount, double eyeSight, double randomJiggleLimit);
+	void updateSpeed(Bird* birds, uint birdCount, int direction);
+	void randSpeed(Bird* birds, uint birdCount);
+	bool isInSight(const Bird& b, uint width, uint height, double eyeSight);
 
 private:
 
@@ -37,5 +42,3 @@ private:
 };
 
 #endif // BIRD_H
-
-
