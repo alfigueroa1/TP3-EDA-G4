@@ -68,23 +68,23 @@ void Bird::setY(double y_) {
 }
 
 //Funciones
-Bird* Bird::createBird(Flock& f) {
+Bird* createBird(Flock& f) {
 	Bird* birds = (Bird*) malloc(f.getBirdCount() * sizeof(Bird)); //Va aca o en Flock? //Como uso el constructor?
 
 	return birds;
 
 }
 
-void Bird::moveBird(Flock& f) {
+void moveBird(Flock& f) {
 	
-	for (int i = 0; i < f.getBirdCount(); i++)
+	for (uint i = 0; i < f.getBirdCount(); i++)
 	{
 		f.getBird(i).setX((f.getBird(i).getX()) + (f.getBird(i).getSpeed()) * (cos(f.getBird(i).getCurrentDir())));
 		f.getBird(i).setY((f.getBird(i).getY()) + (f.getBird(i).getSpeed()) * (sin(f.getBird(i).getCurrentDir())));
 
 		if (f.getBird(i).getX() >= MAX_WIDTH)
 		{
-			f.getBird(i).setX(birds[i].getX - MAX_WIDTH);
+			f.getBird(i).setX(f.getBird(i).getX() - MAX_WIDTH);
 		}
 
 		else if (f.getBird(i).getX() < 0)
@@ -106,21 +106,21 @@ void Bird::moveBird(Flock& f) {
 
 }
 
-void Bird::updateSpeed(Flock& f, int direction) {
+void updateSpeed(Flock& f, int direction) {
 
-	for (int i = 0; i < f.getBirdCount(); i++)
+	for (uint i = 0; i < f.getBirdCount(); i++)
 	{
 		if ((f.getBird(i).getSpeed() + SPEED) < MAX_SPEED && (f.getBird(i).getSpeed() - SPEED) > 0)
 		{
-			f.getBird(i).setSpeed((f.getBird(i).getSpeed() + (direction * SPEED));
+			f.getBird(i).setSpeed((f.getBird(i).getSpeed()) + (direction * SPEED));
 		}
 	}
 
 }
 
-void Bird::updateDir(Flock& f) {
+void updateDir(Flock& f) {
 
-	for (int i = 0; i < f.getBirdCount(); i++)
+	for (uint i = 0; i < f.getBirdCount(); i++)
 	{
 		double sumsin = 0;
 		double sumcos = 0;
@@ -128,8 +128,8 @@ void Bird::updateDir(Flock& f) {
 
 		if (isInSight(f.getBird(i), MAX_WIDTH, MAX_HEIGHT, f.getEyeSight()))
 		{
-			sumsim += sin(f.getBird(i).getCurrentDir);
-			sumcos += cos(f.getBird(i).getCurrentDir);
+			sumsin += sin(f.getBird(i).getCurrentDir());
+			sumcos += cos(f.getBird(i).getCurrentDir());
 
 			counter++;
 		}
@@ -139,15 +139,24 @@ void Bird::updateDir(Flock& f) {
 }
 
 
-void Bird::randSpeed(Flock& f)
+void randSpeed(Flock& f)
 {
-	for (int i = 0; i < f.getBirdCount(); i++)
+	for (uint i = 0; i < f.getBirdCount(); i++)
 	{
 		f.getBird(i).setSpeed((rand() / ((double)RAND_MAX)) * (double)MAX_SPEED);
 	}
+
 }
 
-bool isInSight(Bird b, uint width, uint height, double eyeSight)
+/*
+bool Bird::isInSight(Bird& b, uint width, uint height, double eyeSight)
 {
-	
+	if(x+)
+	{ }
+	If((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y) <= eyeSight * eyeSight)
+	{
+		return TRUE;
+	}
+
 }
+*/

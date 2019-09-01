@@ -3,18 +3,16 @@
  ******************************************************************************/
 #include <stdio.h>
 #include "flock.h"
-#include "bird.h"
-
 
 //Constructor
-Flock::Flock(uint birdCount_, double eyeSight_, double randomJiggleLimit_) {
+Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_) {
 	birdCount = birdCount_;
 	eyeSight = eyeSight_;
 	randomJiggleLimit = randomJiggleLimit_;
 }
 
 //Getters
-Bird Flock::getBird(uint i) { 
+Bird Flock::getBird (uint i) { 
 	return birds[i]; 
 }
 
