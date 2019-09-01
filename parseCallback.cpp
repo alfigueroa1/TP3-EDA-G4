@@ -12,6 +12,7 @@
 #include <string.h>
 #include <math.h>
 #include "parseCallback.h"
+#include "flock.h"
 
 /*******************************************************************************
 * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -200,7 +201,10 @@ static int saveNumber(userData_t* pointerData, int opNumber, double number){
 	else if (opNumber == mode) {
 		if ((floor(number) > 0) && (floor(number) <= 2)) {
 			result = 1;
-			pointerData->mode = floor(number);
+			if(floor(number) == 1)
+				pointerData->mode = MODE1;
+			else
+				pointerData->mode = MODE2;
 		}
 		else
 			printf("Please enter a valid mode value.\n");

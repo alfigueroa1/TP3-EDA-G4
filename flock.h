@@ -10,7 +10,7 @@
  /*******************************************************************************
   * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
   *****************************************************************************/
-typedef enum { MODE1, MODE2 } modeType;
+typedef enum { ERRORMODE, MODE1, MODE2} modeType;
 
  /*******************************************************************************
   * CLASS PROTOTYPE
@@ -21,7 +21,7 @@ public:
 
 	Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_);
 
-	Bird getBird (uint i);
+	Bird* getBird ();
 	uint getBirdCount ();
 	double getEyeSight ();
 	double getRandomJiggleLimit ();
@@ -31,6 +31,7 @@ public:
 	void setRandomJiggleLimit(double randomJiggleLimit_);
 	void setBirdCount(uint birdCount_);
 	void setMode(modeType mode_);
+	void setBird(Bird* bird_);
 
 private:
 

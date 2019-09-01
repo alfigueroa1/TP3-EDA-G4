@@ -12,8 +12,8 @@ Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_) {
 }
 
 //Getters
-Bird Flock::getBird (uint i) { 
-	return birds[i]; 
+Bird* Flock::getBird () { 
+	return birds;
 }
 
 uint Flock::getBirdCount() {
@@ -49,3 +49,6 @@ void Flock::setMode(modeType mode_) {
 	mode = mode_;
 }
 
+void Flock::setBird(Bird* bird_) {
+	birds = bird_;
+}

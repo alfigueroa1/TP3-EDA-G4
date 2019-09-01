@@ -13,15 +13,12 @@
 #define PI 3.14159265358979323846
 #define RADS(x) ((x)*(PI)/(180)) //Transforma un angulo de grados a radianes
 
-#define SPEED 1
-#define MAX_SPEED 10
-#define MAX_WIDTH 100
-#define MAX_HEIGHT 70
-
 //Constructores
 Bird::Bird() {
 	x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
+	while (x >= MAX_WIDTH) x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
 	y = (rand() / ((double)RAND_MAX)) * (double)MAX_HEIGHT;
+	while (y >= MAX_WIDTH) y = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
 	currentDir = ((double)rand() / (double)(RAND_MAX)) * 360;
 	unitsPerTick = 1;
 
@@ -110,10 +107,10 @@ void Bird::updateSpeed(Bird *birds, uint birdCount, int direction) {
 
 	for (uint i = 0; i < birdCount; i++)
 	{
-		if ((birds[i].getSpeed() + SPEED) < MAX_SPEED && (birds[i].getSpeed() - SPEED) > 0)
-		{
+		if ((birds[i].getSpeed() + SPEED) <= MAX_SPEED && direction == 1)
 			birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
-		}
+		else if ((birds[i].getSpeed() - SPEED) >= 0 && direction == -1)
+			birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
 	}
 
 }

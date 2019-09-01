@@ -1,6 +1,7 @@
 #ifndef PARSECALLBACK_H
 #define PARSECALLBACK_H
 
+#include "flock.h"
 /***************************************************************************//**
   @file     +parseCallback.h+
   @brief    +valida las entradas del usuario por consola y guarda los datos en la estructura dada.+
@@ -23,7 +24,7 @@ typedef struct
 	int birds = -1;
 	double eyeSight = -1;
 	double randomJiggleLimit = -1;
-	int mode = -1;
+	modeType mode = ERRORMODE;
 	bool keys[4] = { false, false, false, false };
 
 }userData_t;

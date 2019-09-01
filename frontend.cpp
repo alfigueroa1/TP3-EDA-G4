@@ -30,12 +30,13 @@ enum {CROW};
 static bool init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]);
 static void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]);
 static void drawHUD(Flock* flock, ALLEGRO_FONT* font);
+static void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Flock* flock);
 /*********************************************************************************
 						  GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
 bool handleBirdGraph(Flock* flock) {
-	//uint birdCount = flock.getBirdCount();
-	//Bird* bird = flock.getBird();
+	uint birdCount = flock->getBirdCount();
+	Bird* bird = flock->getBird();
 
 	bool ok = true;
 	
@@ -46,6 +47,9 @@ bool handleBirdGraph(Flock* flock) {
 	ALLEGRO_TIMER* timer = NULL;
 	bool redraw = true, once = true;
 	bool keyPressed[KEYS] = { false, false, false, false, false, false, false, false };
+
+	if (!initializeFrontend())
+		ok = false;
 
 	font = al_load_ttf_font("BebasNeue_Regular.ttf", 20, 0);
 	if (!font) {
@@ -61,6 +65,7 @@ bool handleBirdGraph(Flock* flock) {
 
 	event_queue = al_create_event_queue();
 	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_flip_display();
@@ -93,7 +98,7 @@ bool handleBirdGraph(Flock* flock) {
 			al_clear_to_color(al_map_rgb(100, 100, 255));
 
 			drawHUD(flock, font);
-			//drawBirds()
+			drawBirds(drawList, flock);
 
 			//simStep();
 			al_flip_display();																//se grafica la pantalla
@@ -117,8 +122,12 @@ bool initializeFrontend() {
 		printf("Failed to initialize Image Addon\n");
 	else if (!al_install_keyboard())
 		printf("Failed to initialize Keyboard Addon\n");
+	else if (!al_init_primitives_addon())
+		printf("Failed to initialize primitives Addon!\n");
 	else if (!al_init_font_addon())
 		printf("Failed to initialize Font Addon\n");
+	else if (!al_init_ttf_addon())
+		printf("Failed to initialize TTF Addon\n");
 	else
 		ret = 1;
 	return ret;
@@ -150,35 +159,55 @@ void handleKeyboard() {
 	return;
 }
 
-static void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Bird* bird, uint birdCount, uint rSize) {
-	for (uint i = 0; i < birdCount; i++) {
-		//al_draw_bitmap(drawList[CROW], bird->getX(), bird->getY, 0);
+static void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Flock* flock) {
+	for (uint i = 0; i < flock->getBirdCount(); i++) {
+		Bird* bird = flock->getBird() + i;
+		al_draw_bitmap(drawList[CROW], bird->getX()*UNIT, bird->getY()*UNIT + UPPER_H, 0);
 		//al_draw_rotated_bitmap(drawList[CROW], CROW_CENTER, CROW_CENTER, bird->getX(), bird->getY, (bird->getCurrentDir()*PI/180.0), 0);
 	}
 	return;
 }
 
 static void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
-	
+	char birds[4];
+	char mode[3];
+	char speed[5];
+	char jiggle[5];
+	char sight[5];
+	_itoa_s(flock->getBirdCount(), birds, 10);
+	_itoa_s(flock->getMode(), mode, 10);
+	snprintf(jiggle, 5, "%.2f", flock->getRandomJiggleLimit());
+	snprintf(sight, 5, "%.2f", flock->getEyeSight());
+	snprintf(speed, 5, "%.2f", flock->getBird()->getSpeed());
 
-	al_draw_filled_rectangle(0, 0, WORLD_W, UPPER_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro superior
-	al_draw_filled_rectangle(0, WORLD_H - LOWER_H, WORLD_W, WORLD_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
+
+	al_draw_filled_rectangle(0, 0, SCREEN_W, UPPER_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro superior
+	al_draw_filled_rectangle(0, SCREEN_H - LOWER_H, SCREEN_W, SCREEN_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
 	al_flip_display();
 
 	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Bird Count:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, 0, 0, birds);
 	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 20, 0, "Mode:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, 20, 0, mode);
 	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 40, 0, "Speed (Mode 1 Only):");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W/2, 0, 0, "Random Jiggle Limit:");
+	if (flock->getMode() == MODE1) {
+		al_draw_text(font, al_map_rgb(255, 255, 255), 150, 40, 0, speed);
+	}
+	else
+		al_draw_text(font, al_map_rgb(255, 255, 255), 150, 40, 0, "-");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 0, 0, "Random Jiggle Limit:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2+140, 0, 0, jiggle);
 	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 20, 0, "Eye Sight:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2+90, 20, 0, sight);
 
-	al_draw_text(font, al_map_rgb(255, 255, 255), 0, WORLD_H - LOWER_H, 0, "Controls:");
-	al_draw_text(font, al_map_rgb(255, 255, 255), 40, WORLD_H - LOWER_H, 0, "-1 or 2 for MODE:");
-	al_draw_text(font, al_map_rgb(255, 255, 255), 40, WORLD_H - LOWER_H +20, 0, "UP: Speed Up");
-	al_draw_text(font, al_map_rgb(255, 255, 255), 40, WORLD_H - LOWER_H +40, 0, "DOWN: Speed Down");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 0, 0, "LEFT: Eye Sight Down");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 20, 0, "RIGHT: Eye Sight Up");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 40, 0, "Q: Random Jiggle Down");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 60, 0, "W: Random Jiggle Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 0, SCREEN_H - LOWER_H, 0, "Controls:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H, 0, "-1 or 2 for MODE:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H +20, 0, "-UP: Speed Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H +40, 0, "-DOWN: Speed Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H, 0, "-LEFT: Eye Sight Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+20, 0, "-RIGHT: Eye Sight Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+40, 0, "-Q: Random Jiggle Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+60, 0, "-W: Random Jiggle Up");
 
 
 

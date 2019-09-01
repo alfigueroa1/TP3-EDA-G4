@@ -5,9 +5,16 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
+//
+#include <new>
+#include <cstdio>
+#include <cstdlib>
+//
 #include "parseCallback.h"
 #include "parseLib.h"
 #include "frontend.h"
+
+using namespace std;
 
  /*******************************************************************************
   * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
@@ -20,14 +27,25 @@ static void printHelpText(void);
 int main(int argc, char** argv) {
 	pCallback_t pToCallback = parseCallback;
 	userData_t inputData;
-
-	if (!initializeFrontend())
-		return 0;
+	//if (!initializeFrontend())
+	//	return 0;
 
 	srand((unsigned int)time(NULL));
 
 	if (checkInputs(argc, argv, pToCallback, &inputData) == 0)
 		return 0;
+
+	Flock flock(inputData.birds, inputData.eyeSight, inputData.randomJiggleLimit);
+	flock.setMode(inputData.mode);
+
+	Bird* birdStarter = new(std::nothrow)Bird[inputData.birds];
+	if (birdStarter == NULL) {
+		printf("Could not allocate memory for Flock\n");
+		return 0;
+	}
+	flock.setBird(birdStarter);
+	
+	handleBirdGraph(&flock);
 
 	/*********************************************************
 	*		MAIN TENTATIVO
@@ -42,7 +60,7 @@ int main(int argc, char** argv) {
 	//destroyEverything();
 	*/
 
-
+	delete[]birdStarter;
 	printf("CORRECT EXECUTION!\n");
 	return 0;
 }
@@ -61,7 +79,7 @@ static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData
 		printf("PLEASE ENTER A VALID EYESIGHT VALUE\n");
 	else if (inputData->randomJiggleLimit == (double)ERR_CODE)
 		printf("PLEASE ENTER A VALID JIGGLE LIMIT VALUE\n");
-	else if (inputData->mode == ERR_CODE)
+	else if (inputData->mode == ERRORMODE)
 		printf("PLEASE ENTER A VALID MODE VALUE\n");
 	else ret = 1;
 	if (!ret)

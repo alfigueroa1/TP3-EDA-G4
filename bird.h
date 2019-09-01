@@ -6,6 +6,15 @@
  ******************************************************************************/
 #include "types.h"
 
+#define SPEED 0.1
+#define JIGGLE_INC 0.05
+#define MAX_JIGGLE 50
+#define SIGHT_INC 0.1
+#define MAX_SIGHT	50
+#define MAX_SPEED 10
+#define MAX_WIDTH 100
+#define MAX_HEIGHT 70
+
  /*******************************************************************************
   * CLASS PROTOTYPE
   ******************************************************************************/
