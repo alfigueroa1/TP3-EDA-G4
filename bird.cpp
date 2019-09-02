@@ -22,6 +22,11 @@ using namespace std;
 /*********************************************************************************
 						  GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
+
+/**********************
+*	CONSTRUCTORS
+***********************/
+
 //Constructores
 Bird::Bird() {
 	do {
@@ -33,18 +38,26 @@ Bird::Bird() {
 	} while (y >= MAX_WIDTH);
 
 	currentDir = ((double)rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
-	unitsPerTick = 1;	//Velocidad default
+	speed = 1;	//Velocidad default
 	newDir = 0;
 
 }
+
+/**********************
+*	PUBLIC METHODS
+***********************/
  
 //Getters
 double Bird::getCurrentDir() {
 	return RADS(currentDir); 
 }
 
+double Bird::getNewDir() {
+	return newDir;
+}
+
 double Bird::getSpeed() {
-	return unitsPerTick;
+	return speed;
 }
 
 double Bird::getX() {
@@ -65,8 +78,8 @@ void Bird::setCurrentDir(double currentDir_) {
 	currentDir = currentDir_;
 }
 
-void Bird::setSpeed(double unitsPerTick_) {
-	unitsPerTick = unitsPerTick_;
+void Bird::setSpeed(double speed_) {
+	speed = speed_;
 
 }
 
@@ -78,8 +91,14 @@ void Bird::setY(double y_) {
 	y = y_;
 }
 
+
+/**********************
+*	PRIVATE METHODS
+***********************/
+
 //Funciones
 Bird* Bird::createBird(Bird *birds, uint birdCount) {
+
 	birds = new(std::nothrow)Bird[birdCount];
 
 	if (birds == NULL) {
@@ -90,58 +109,58 @@ Bird* Bird::createBird(Bird *birds, uint birdCount) {
 
 }
 
-void Bird::moveBird(Bird& bird) {
+void Bird::moveBird(Bird& b) {
 	
-	bird.setX((bird.getX()) + (bird.getSpeed()) * (cos(bird.getCurrentDir())));	//Calcula posicion en X
-	bird.setY((bird.getY()) + (bird.getSpeed()) * (sin(bird.getCurrentDir())));	//Calcula posicion en Y
+	b.x = b.x + b.speed * cos(b.getCurrentDir()); //Calcula posicion en X
+	b.y = b.y + b.speed * sin(b.getCurrentDir()); //Calcula posicion en Y
 
-	if (bird.getX() >= MAX_WIDTH)	//Si supera el ancho maximo
+	if (b.x >= MAX_WIDTH)	//Si supera el ancho maximo
 	{
-		bird.setX(bird.getX() - MAX_WIDTH); //Le resta el ancho para que aparezca a la derecha
+		b.x = b.x - MAX_WIDTH; //Le resta el ancho para que aparezca a la derecha
 	}
 
-	else if (bird.getX() < 0)	//Si supera el minimo
+	else if (b.x < 0)	//Si supera el minimo
 	{
-		bird.setX((bird.getX()) + MAX_WIDTH); //Le suma el ancho para que aprezca ala izquierda
+		b.x = b.x + MAX_WIDTH; //Le suma el ancho para que aprezca ala izquierda
 	}
 
-	if (bird.getY() >= MAX_HEIGHT)	//Si suoera la altura maxima
+	if (b.y >= MAX_HEIGHT)	//Si suoera la altura maxima
 	{
-		bird.setY((bird.getY()) - MAX_HEIGHT); //Le resta la altura para que aparezaca abajo
+		b.y = b.y - MAX_HEIGHT; //Le resta la altura para que aparezaca abajo
 	}
 
-	else if (bird.getY() < 0) //Si supera la minima
+	else if (b.y < 0) //Si supera la minima
 	{
-		bird.setY((bird.getY()) + MAX_HEIGHT);	//Le suma la altura para que aparezca arriba
+		b.y = b.y + MAX_HEIGHT;	//Le suma la altura para que aparezca arriba
 	}
 
 
 }
 
-void Bird::updateSpeed(Bird& bird, int direction) {
+void Bird::updateSpeed(Bird& b, int direction) {
 
 	if (direction == UP_SPEED) {
-		if ((bird.getSpeed() + SPEED) <= MAX_SPEED) {
+		if ((b.speed + SPEED) <= MAX_SPEED) {
 
-			bird.setSpeed((bird.getSpeed()) + (direction * SPEED));
+			b.speed = b.speed + (direction * SPEED);
 		}
 
 		else {
 
-			bird.setSpeed(MAX_SPEED);
+			b.speed = MAX_SPEED;
 		}
 
 	}
 
 	if (direction == DOWN_SPEED) {
-		if ((bird.getSpeed() - SPEED) >= 0) {
+		if ((b.speed - SPEED) >= 0) {
 
-			bird.setSpeed((bird.getSpeed()) + (direction * SPEED));
+			b.speed = b.speed + (direction * SPEED);
 		}
 		
 		else {
 
-			bird.setSpeed(0);
+			b.speed = 0;
 		}
 	}
 
@@ -178,13 +197,20 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 
 void Bird::randSpeed(Bird& bird)
 {
-	bird.setSpeed((rand() / ((double)RAND_MAX)) * (double)MAX_SPEED);	//Genera velocidades aleatorias para los pajaros
+	bird.speed = (rand() / ((double)RAND_MAX)) * (double)MAX_SPEED;	//Genera velocidades aleatorias para los pajaros
 }
 
 bool Bird::isInSight(Bird& bird, uint width, uint height, double eyeSight)
 {
 	return 1;
 
+}
+
+void Bird::destroyBirds(Bird* birds) {
+	if (birds != NULL) {
+
+		delete[]birds;
+	}
 }
 
 double getRandomJiggle(double randomJiggleLimit_) {

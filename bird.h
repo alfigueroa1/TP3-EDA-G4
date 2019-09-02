@@ -29,21 +29,23 @@ public:
 
 	Bird();
 	double getCurrentDir();
+	double getNewDir();
 	double getSpeed();
 	double getX();
 	double getY();
 	void setNewDir(double newDir_);
 	void setCurrentDir(double currentDir_);
-	void setSpeed(double unitsPerTick_);
+	void setSpeed(double speed_);
 	void setX(double x_);
 	void setY(double y_);
 
 	Bird* createBird(Bird* birds, uint birdCount);	//Devuelve NULL si hay error
-	void moveBird(Bird& bird);
+	void destroyBirds(Bird* birds);
+	void moveBird(Bird& b);
 	void updateDir(Bird* birds, uint birdCount, double eyeSight, double randomJiggleLimit);
-	void updateSpeed(Bird& bird,int direction);
-	void randSpeed(Bird& bird);
-	bool isInSight(Bird& bird, uint width, uint height, double eyeSight); //Devuelve 1 si exito, sino devuelve 0.
+	void updateSpeed(Bird& b,int direction);
+	void randSpeed(Bird& b);
+	bool isInSight(Bird& b, uint width, uint height, double eyeSight); //Devuelve 1 si exito, sino devuelve 0.
 
 private:
 
@@ -51,7 +53,7 @@ private:
 	double y;
 	double currentDir;
 	double newDir;
-	double unitsPerTick;
+	double speed;
 
 };
 

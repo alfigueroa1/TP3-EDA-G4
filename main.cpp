@@ -50,8 +50,12 @@ int main(int argc, char** argv) {
 		printf("\n Coords = (%f,%f)", birdStarter[i].getX(), birdStarter[i].getY());
 	}
 
-
 	handleBirdGraph(&flock);
+
+	for (int i = 0; i < inputData.birds; i++)
+	{
+		printf("\n Speed = %f", birdStarter[i].getSpeed());
+	}
 
 	/*********************************************************
 	*		MAIN TENTATIVO

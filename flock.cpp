@@ -58,3 +58,22 @@ void Flock::setMode(modeType mode_) {
 void Flock::setBird(Bird* bird_) {
 	birds = bird_;
 }
+
+
+void Flock::flockStep()
+{
+	//Calcula nueva direccion para toda la parvada
+	for (uint i = 0; i < birdCount; i++) {
+		birds[i].updateDir(birds, birdCount, eyeSight, randomJiggleLimit);
+	}
+
+	//Setea la nueva direccion como principal
+	for (uint i = 0; i < birdCount; i++) {
+		birds[i].setCurrentDir(birds[i].getNewDir());
+	}
+
+	//Mueve todos los pajaros
+	for (uint i = 0; i < birdCount; i++) {
+		birds[i].moveBird(birds[i]);
+	}
+}

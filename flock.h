@@ -32,6 +32,7 @@ public:
 	void setBirdCount(uint birdCount_);
 	void setMode(modeType mode_);
 	void setBird(Bird* bird_);
+	void flockStep();
 
 private:
 

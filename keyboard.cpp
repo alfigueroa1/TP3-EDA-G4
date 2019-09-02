@@ -46,7 +46,7 @@ void handleKeyInputs(bool keyPressed[KEYS], Flock* flock) {
 		if (flock->getMode() == MODE1) {
 			flock->setMode(MODE2);
 
-			for (uint i = 1; i < flock->getBirdCount(); i++) {
+			for (uint i = 0; i < flock->getBirdCount(); i++) {
 				(flock->getBird() + i)->randSpeed(flock->getBird()[i]);
 			}
 		}
