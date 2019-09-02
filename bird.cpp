@@ -6,6 +6,12 @@
 #include <math.h>
 #include "bird.h"
 #include "flock.h"
+//
+#include <new>
+#include <cstdio>
+#include <cstdlib>
+//
+using namespace std;
 
 /*******************************************************************************
 * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -137,6 +143,7 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 		double sumsin = 0;
 		double sumcos = 0;
 		uint counter = 0;
+		double newDir_ = 0;
 
 		if (isInSight(birds[i], MAX_WIDTH, MAX_HEIGHT, eyeSight))
 		{
@@ -146,7 +153,13 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 			counter++;	//Aumento contador de pajaros
 		}
 
-		birds[i].setNewDir((atan2((sumsin / counter), (sumcos / counter)) + randomJiggleLimit));	//Formula para calcular el promedio de los angulos 
+		newDir_ = atan2((sumsin / counter), (sumcos / counter)) - getRandomJiggle(randomJiggleLimit) + getRandomJiggle(randomJiggleLimit); //Formula para calcular el promedio de los angulos 
+		if (newDir_ < 0)
+		{
+			newDir_ = 360 - newDir_;
+		}
+
+		birds[i].setNewDir(newDir_);
 	}
 }
 
@@ -164,4 +177,13 @@ bool Bird::isInSight(const Bird& b, uint width, uint height, double eyeSight)
 {
 	return 1;
 
+}
+
+double getRandomJiggle(double randomJiggleLimit_) {
+	double rndJiggle;
+	do {
+		rndJiggle = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;	//Genera un RandomJiggle aleatorio
+	} while (rndJiggle >= randomJiggleLimit_);
+
+	return rndJiggle;
 }

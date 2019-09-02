@@ -53,4 +53,7 @@ private:
 
 };
 
+
+double getRandomJiggle(double randomJiggleLimit_);
+
 #endif // BIRD_H
