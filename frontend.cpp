@@ -15,6 +15,7 @@
 #include "types.h"
 #include "frontend.h"
 #include "keyboard.h"
+
 /*******************************************************************************
                   CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -24,6 +25,7 @@
 * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
 ******************************************************************************/
 enum {CROW};
+
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -31,6 +33,7 @@ static bool init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]);
 static void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]);
 static void drawHUD(Flock* flock, ALLEGRO_FONT* font);
 static void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Flock* flock);
+
 /*********************************************************************************
 						  GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
@@ -151,6 +154,11 @@ static bool init_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
 static void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
 	for (uint i = 0; i < DRAWABLES; i++)
 		al_destroy_bitmap(drawList[i]);
+	return;
+}
+
+void handleKeyboard() {
+	
 	return;
 }
 

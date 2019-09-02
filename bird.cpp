@@ -13,14 +13,17 @@
 #define PI 3.14159265358979323846
 #define RADS(x) ((x)*(PI)/(180)) //Transforma un angulo de grados a radianes
 
+/*********************************************************************************
+						  GLOBAL FUNCTION DEFINITIONS
+ ********************************************************************************/
 //Constructores
 Bird::Bird() {
-	x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
+	x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;	//Genera posicion en X aleatoria
 	while (x >= MAX_WIDTH) x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
-	y = (rand() / ((double)RAND_MAX)) * (double)MAX_HEIGHT;
+	y = (rand() / ((double)RAND_MAX)) * (double)MAX_HEIGHT;	//Genera posicion en Y aleatoria
 	while (y >= MAX_WIDTH) y = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
-	currentDir = ((double)rand() / (double)(RAND_MAX)) * 360;
-	unitsPerTick = 1;
+	currentDir = ((double)rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
+	unitsPerTick = 1;	//Velocidad default
 
 }
  
@@ -66,7 +69,7 @@ void Bird::setY(double y_) {
 
 //Funciones
 Bird* Bird::createBird(Bird *birds, uint birdCount) {
-	birds = (Bird*) malloc(birdCount * sizeof(Bird)); //Va aca o en Flock? //Como uso el constructor?
+	birds = (Bird*) malloc(birdCount * sizeof(Bird)); //Como uso el constructor?
 
 	return birds;
 
@@ -76,27 +79,27 @@ void Bird::moveBird(Bird *birds, uint birdCount) {
 	
 	for (uint i = 0; i < birdCount; i++)
 	{
-		birds[i].setX((birds[i].getX()) + (birds[i].getSpeed()) * (cos(birds[i].getCurrentDir())));
-		birds[i].setY((birds[i].getY()) + (birds[i].getSpeed()) * (sin(birds[i].getCurrentDir())));
+		birds[i].setX((birds[i].getX()) + (birds[i].getSpeed()) * (cos(birds[i].getCurrentDir())));	//Calcula posicion en X
+		birds[i].setY((birds[i].getY()) + (birds[i].getSpeed()) * (sin(birds[i].getCurrentDir())));	//Calcula posicion en Y
 
-		if (birds[i].getX() >= MAX_WIDTH)
+		if (birds[i].getX() >= MAX_WIDTH)	//Si supera el ancho maximo
 		{
-			birds[i].setX(birds[i].getX() - MAX_WIDTH);
+			birds[i].setX(birds[i].getX() - MAX_WIDTH); //Le resta el ancho para que aparezca a la derecha
 		}
 
-		else if (birds[i].getX() < 0)
+		else if (birds[i].getX() < 0)	//Si supera el minimo
 		{
-			birds[i].setX((birds[i].getX()) + MAX_WIDTH);
+			birds[i].setX((birds[i].getX()) + MAX_WIDTH); //Le suma el ancho para que aprezca ala izquierda
 		}
 
-		if (birds[i].getY() >= MAX_HEIGHT)
+		if (birds[i].getY() >= MAX_HEIGHT)	//Si suoera la altura maxima
 		{
-			birds[i].setY((birds[i].getY()) - MAX_HEIGHT);
+			birds[i].setY((birds[i].getY()) - MAX_HEIGHT); //Le resta la altura para que aparezaca abajo
 		}
 
-		else if (birds[i].getY() < 0)
+		else if (birds[i].getY() < 0) //Si supera la minima
 		{
-			birds[i].setY((birds[i].getY()) + MAX_HEIGHT);
+			birds[i].setY((birds[i].getY()) + MAX_HEIGHT);	//Le suma la altura para que aparezca arriba
 		}
 
 	}
@@ -107,22 +110,16 @@ void Bird::updateSpeed(Bird *birds, uint birdCount, int direction) {
 
 	for (uint i = 0; i < birdCount; i++)
 	{
-		if(direction == 1){
-			if ((birds[i].getSpeed() + SPEED) <= MAX_SPEED)
-				birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
-			else
-				birds[i].setSpeed(MAX_SPEED);
-
+		if ((birds[i].getSpeed() + SPEED) <= MAX_SPEED && direction == 1)	//Aumenta la velocidad si esta no llego al max.
+		{
+			birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
 		}
-		if (direction == -1) {
-			if ((birds[i].getSpeed() - SPEED) >= 0)
-				birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
-			else
-				birds[i].setSpeed(0);
-
+		else if ((birds[i].getSpeed() - SPEED) >= 0 && direction == -1)		//Disminuye la velocidad si esta no llego a cero.
+		{
+			birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
 		}
 	}
-	return;
+
 }
 
 void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double randomJiggleLimit) {
@@ -135,13 +132,13 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 
 		if (isInSight(birds[i], MAX_WIDTH, MAX_HEIGHT, eyeSight))
 		{
-			sumsin += sin(birds[i].getCurrentDir());
-			sumcos += cos(birds[i].getCurrentDir());
+			sumsin += sin(birds[i].getCurrentDir());	//Suma de todos los sin de los pajaros en radio
+			sumcos += cos(birds[i].getCurrentDir());	//Suma de todos los cos de los pajaros en radio
 
-			counter++;
+			counter++;	//Aumento contador de pajaros
 		}
 
-		birds[i].setNewDir((atan2((sumsin / counter), (sumcos / counter)) + randomJiggleLimit));
+		birds[i].setNewDir((atan2((sumsin / counter), (sumcos / counter)) + randomJiggleLimit));	//Formula para calcular el promedio de los angulos 
 	}
 }
 
@@ -150,7 +147,7 @@ void Bird::randSpeed(Bird* birds, uint birdCount)
 {
 	for (uint i = 0; i < birdCount; i++)
 	{
-		birds[i].setSpeed((rand() / ((double)RAND_MAX)) * (double)MAX_SPEED);
+		birds[i].setSpeed((rand() / ((double)RAND_MAX)) * (double)MAX_SPEED);	//Genera velocidades aleatorias para los pajaros
 	}
 
 }

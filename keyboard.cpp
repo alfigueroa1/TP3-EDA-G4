@@ -30,18 +30,10 @@ void handleKeyInputs(bool keyPressed[KEYS], Flock* flock) {
 			flock->setEyeSight(0.0);
 	}
 	else if (keyPressed[KEY_1] == true) {
-		if (flock->getMode() == MODE2) {
-			flock->setMode(MODE1);
-			for (uint i = 1; i < flock->getBirdCount(); i++) {
-				(flock->getBird() + i)->setSpeed((flock->getBird())->getSpeed());
-			}
-		}
+		flock->setMode(MODE1);
 	}
 	else if (keyPressed[KEY_2] == true) {
-		if (flock->getMode() == MODE1) {
-			flock->setMode(MODE2);
-			flock->getBird()->randSpeed(flock->getBird(), flock->getBirdCount());
-		}
+		flock->setMode(MODE2);
 	}
 	else if (keyPressed[KEY_W] == true) {
 		if(flock->getRandomJiggleLimit()+JIGGLE_INC <= MAX_JIGGLE)

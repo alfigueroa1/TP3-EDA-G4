@@ -6,14 +6,17 @@
  ******************************************************************************/
 #include "types.h"
 
-#define SPEED 0.1
-#define JIGGLE_INC 0.05
-#define MAX_JIGGLE 50
-#define SIGHT_INC 0.1
+ /*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
+#define SPEED		0.1
+#define JIGGLE_INC	0.05
+#define MAX_JIGGLE	50
+#define SIGHT_INC	0.1
 #define MAX_SIGHT	50
-#define MAX_SPEED 10
-#define MAX_WIDTH 100
-#define MAX_HEIGHT 70
+#define MAX_SPEED	10
+#define MAX_WIDTH	100
+#define MAX_HEIGHT	70
 
  /*******************************************************************************
   * CLASS PROTOTYPE
@@ -33,12 +36,12 @@ public:
 	void setX(double x_);
 	void setY(double y_);
 
-	Bird* createBird(Bird* birds, uint birdCount);
+	Bird* createBird(Bird* birds, uint birdCount);	//Devuelve NULL si hay error
 	void moveBird(Bird* birds, uint birdCount);
 	void updateDir(Bird* birds, uint birdCount, double eyeSight, double randomJiggleLimit);
 	void updateSpeed(Bird* birds, uint birdCount, int direction);
 	void randSpeed(Bird* birds, uint birdCount);
-	bool isInSight(const Bird& b, uint width, uint height, double eyeSight);
+	bool isInSight(const Bird& b, uint width, uint height, double eyeSight); //Devuelve 1 si exito, sino devuelve 0.
 
 private:
 

@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include "flock.h"
 
+
+ /*********************************************************************************
+						   GLOBAL FUNCTION DEFINITIONS
+  ********************************************************************************/
+
 //Constructor
 Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_) {
 	birdCount = birdCount_;
