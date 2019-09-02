@@ -34,6 +34,7 @@ Bird::Bird() {
 
 	currentDir = ((double)rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
 	unitsPerTick = 1;	//Velocidad default
+	newDir = 0;
 
 }
  
@@ -89,54 +90,61 @@ Bird* Bird::createBird(Bird *birds, uint birdCount) {
 
 }
 
-void Bird::moveBird(Bird *birds, uint birdCount) {
+void Bird::moveBird(Bird& bird) {
 	
-	for (uint i = 0; i < birdCount; i++)
+	bird.setX((bird.getX()) + (bird.getSpeed()) * (cos(bird.getCurrentDir())));	//Calcula posicion en X
+	bird.setY((bird.getY()) + (bird.getSpeed()) * (sin(bird.getCurrentDir())));	//Calcula posicion en Y
+
+	if (bird.getX() >= MAX_WIDTH)	//Si supera el ancho maximo
 	{
-		birds[i].setX((birds[i].getX()) + (birds[i].getSpeed()) * (cos(birds[i].getCurrentDir())));	//Calcula posicion en X
-		birds[i].setY((birds[i].getY()) + (birds[i].getSpeed()) * (sin(birds[i].getCurrentDir())));	//Calcula posicion en Y
-
-		if (birds[i].getX() >= MAX_WIDTH)	//Si supera el ancho maximo
-		{
-			birds[i].setX(birds[i].getX() - MAX_WIDTH); //Le resta el ancho para que aparezca a la derecha
-		}
-
-		else if (birds[i].getX() < 0)	//Si supera el minimo
-		{
-			birds[i].setX((birds[i].getX()) + MAX_WIDTH); //Le suma el ancho para que aprezca ala izquierda
-		}
-
-		if (birds[i].getY() >= MAX_HEIGHT)	//Si suoera la altura maxima
-		{
-			birds[i].setY((birds[i].getY()) - MAX_HEIGHT); //Le resta la altura para que aparezaca abajo
-		}
-
-		else if (birds[i].getY() < 0) //Si supera la minima
-		{
-			birds[i].setY((birds[i].getY()) + MAX_HEIGHT);	//Le suma la altura para que aparezca arriba
-		}
-
+		bird.setX(bird.getX() - MAX_WIDTH); //Le resta el ancho para que aparezca a la derecha
 	}
+
+	else if (bird.getX() < 0)	//Si supera el minimo
+	{
+		bird.setX((bird.getX()) + MAX_WIDTH); //Le suma el ancho para que aprezca ala izquierda
+	}
+
+	if (bird.getY() >= MAX_HEIGHT)	//Si suoera la altura maxima
+	{
+		bird.setY((bird.getY()) - MAX_HEIGHT); //Le resta la altura para que aparezaca abajo
+	}
+
+	else if (bird.getY() < 0) //Si supera la minima
+	{
+		bird.setY((bird.getY()) + MAX_HEIGHT);	//Le suma la altura para que aparezca arriba
+	}
+
 
 }
 
-void Bird::updateSpeed(Bird *birds, uint birdCount, int direction){
-	for (uint i = 0; i < birdCount; i++)
-	{
-		if (direction == 1) {
-			if ((birds[i].getSpeed() + SPEED) <= MAX_SPEED)
-				birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
-			else
-				birds[i].setSpeed(MAX_SPEED);
+void Bird::updateSpeed(Bird& bird, int direction) {
 
+	if (direction == UP_SPEED) {
+		if ((bird.getSpeed() + SPEED) <= MAX_SPEED) {
+
+			bird.setSpeed((bird.getSpeed()) + (direction * SPEED));
 		}
-		if (direction == -1) {
-			if ((birds[i].getSpeed() - SPEED) >= 0)
-				birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
-			else
-				birds[i].setSpeed(0);
+
+		else {
+
+			bird.setSpeed(MAX_SPEED);
+		}
+
+	}
+
+	if (direction == DOWN_SPEED) {
+		if ((bird.getSpeed() - SPEED) >= 0) {
+
+			bird.setSpeed((bird.getSpeed()) + (direction * SPEED));
+		}
+		
+		else {
+
+			bird.setSpeed(0);
 		}
 	}
+
 	return;
 }
 
@@ -168,16 +176,12 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 }
 
 
-void Bird::randSpeed(Bird* birds, uint birdCount)
+void Bird::randSpeed(Bird& bird)
 {
-	for (uint i = 0; i < birdCount; i++)
-	{
-		birds[i].setSpeed((rand() / ((double)RAND_MAX)) * (double)MAX_SPEED);	//Genera velocidades aleatorias para los pajaros
-	}
-
+	bird.setSpeed((rand() / ((double)RAND_MAX)) * (double)MAX_SPEED);	//Genera velocidades aleatorias para los pajaros
 }
 
-bool Bird::isInSight(const Bird& b, uint width, uint height, double eyeSight)
+bool Bird::isInSight(Bird& bird, uint width, uint height, double eyeSight)
 {
 	return 1;
 
@@ -185,8 +189,11 @@ bool Bird::isInSight(const Bird& b, uint width, uint height, double eyeSight)
 
 double getRandomJiggle(double randomJiggleLimit_) {
 	double rndJiggle;
+
 	do {
+
 		rndJiggle = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;	//Genera un RandomJiggle aleatorio
+
 	} while (rndJiggle >= randomJiggleLimit_);
 
 	return rndJiggle;

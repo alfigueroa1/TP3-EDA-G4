@@ -12,10 +12,15 @@
  ********************************************************************************/
 void handleKeyInputs(bool keyPressed[KEYS], Flock* flock) {
 	if (keyPressed[KEY_UP] == true) {
-		(flock->getBird())->updateSpeed(flock->getBird(), flock->getBirdCount(), 1);
+		for (uint i = 0; i < flock->getBirdCount(); i++) {
+			(flock->getBird() + i)->updateSpeed(flock->getBird()[i], UP_SPEED);
+		}
 	}
 	else if (keyPressed[KEY_DOWN] == true) {
-		(flock->getBird())->updateSpeed(flock->getBird(), flock->getBirdCount(), -1);
+
+		for (uint i = 0; i < flock->getBirdCount(); i++) {
+			(flock->getBird() + i)->updateSpeed(flock->getBird()[i], DOWN_SPEED);
+		}
 	}
 	else if (keyPressed[KEY_RIGHT] == true) {
 		if (flock->getEyeSight() + JIGGLE_INC <= MAX_SIGHT)
@@ -40,7 +45,10 @@ void handleKeyInputs(bool keyPressed[KEYS], Flock* flock) {
 	else if (keyPressed[KEY_2] == true) {
 		if (flock->getMode() == MODE1) {
 			flock->setMode(MODE2);
-			flock->getBird()->randSpeed(flock->getBird(), flock->getBirdCount());
+
+			for (uint i = 1; i < flock->getBirdCount(); i++) {
+				(flock->getBird() + i)->randSpeed(flock->getBird()[i]);
+			}
 		}
 	}
 	else if (keyPressed[KEY_W] == true) {

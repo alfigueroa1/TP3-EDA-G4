@@ -45,6 +45,12 @@ int main(int argc, char** argv) {
 	}
 	flock.setBird(birdStarter);
 	
+	for (int i = 0; i < inputData.birds; i++)
+	{
+		printf("\n Coords = (%f,%f)", birdStarter[i].getX(), birdStarter[i].getY());
+	}
+
+
 	handleBirdGraph(&flock);
 
 	/*********************************************************
