@@ -120,20 +120,24 @@ void Bird::moveBird(Bird *birds, uint birdCount) {
 
 }
 
-void Bird::updateSpeed(Bird *birds, uint birdCount, int direction) {
-
+void Bird::updateSpeed(Bird *birds, uint birdCount, int direction){
 	for (uint i = 0; i < birdCount; i++)
 	{
-		if ((birds[i].getSpeed() + SPEED) <= MAX_SPEED && direction == 1)	//Aumenta la velocidad si esta no llego al max.
-		{
-			birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
+		if (direction == 1) {
+			if ((birds[i].getSpeed() + SPEED) <= MAX_SPEED)
+				birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
+			else
+				birds[i].setSpeed(MAX_SPEED);
+
 		}
-		else if ((birds[i].getSpeed() - SPEED) >= 0 && direction == -1)		//Disminuye la velocidad si esta no llego a cero.
-		{
-			birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
+		if (direction == -1) {
+			if ((birds[i].getSpeed() - SPEED) >= 0)
+				birds[i].setSpeed((birds[i].getSpeed()) + (direction * SPEED));
+			else
+				birds[i].setSpeed(0);
 		}
 	}
-
+	return;
 }
 
 void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double randomJiggleLimit) {
