@@ -154,11 +154,6 @@ static void destroy_drawables(ALLEGRO_BITMAP* drawList[DRAWABLES]) {
 	return;
 }
 
-void handleKeyboard() {
-	
-	return;
-}
-
 static void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Flock* flock) {
 	for (uint i = 0; i < flock->getBirdCount(); i++) {
 		Bird* bird = flock->getBird() + i;
