@@ -18,10 +18,14 @@
  ********************************************************************************/
 //Constructores
 Bird::Bird() {
-	x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;	//Genera posicion en X aleatoria
-	while (x >= MAX_WIDTH) x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
-	y = (rand() / ((double)RAND_MAX)) * (double)MAX_HEIGHT;	//Genera posicion en Y aleatoria
-	while (y >= MAX_WIDTH) y = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;
+	do {
+		x = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;	//Genera posicion en X aleatoria
+	} while (x >= MAX_WIDTH);
+	
+	do {
+		y = (rand() / ((double)RAND_MAX)) * (double)MAX_HEIGHT;	//Genera posicion en Y aleatoria
+	} while (y >= MAX_WIDTH);
+
 	currentDir = ((double)rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
 	unitsPerTick = 1;	//Velocidad default
 
@@ -69,7 +73,11 @@ void Bird::setY(double y_) {
 
 //Funciones
 Bird* Bird::createBird(Bird *birds, uint birdCount) {
-	birds = (Bird*) malloc(birdCount * sizeof(Bird)); //Como uso el constructor?
+	birds = new(std::nothrow)Bird[birdCount];
+
+	if (birds == NULL) {
+		printf("Could not allocate memory for Flock\n");
+	}
 
 	return birds;
 

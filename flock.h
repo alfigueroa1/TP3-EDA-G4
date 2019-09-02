@@ -26,6 +26,7 @@ public:
 	double getEyeSight ();
 	double getRandomJiggleLimit ();
 	modeType getMode ();
+	double getRandomJiggle();
 
 	void setEyeSight(double eyeSight_);	
 	void setRandomJiggleLimit(double randomJiggleLimit_);

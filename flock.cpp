@@ -14,6 +14,8 @@ Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_) {
 	birdCount = birdCount_;
 	eyeSight = eyeSight_;
 	randomJiggleLimit = randomJiggleLimit_;
+	birds = NULL;
+	mode = ERRORMODE;
 }
 
 //Getters
@@ -35,6 +37,12 @@ double Flock::getRandomJiggleLimit() {
 
 modeType Flock::getMode() {
 	return mode;
+}
+
+double Flock::getRandomJiggle() {
+	double rndJiggle;
+
+
 }
 
 //Setters
