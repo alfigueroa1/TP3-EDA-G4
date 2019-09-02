@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "flock.h"
 
-
  /*********************************************************************************
 						   GLOBAL FUNCTION DEFINITIONS
   ********************************************************************************/
@@ -37,12 +36,6 @@ double Flock::getRandomJiggleLimit() {
 
 modeType Flock::getMode() {
 	return mode;
-}
-
-double Flock::getRandomJiggle() {
-	double rndJiggle;
-
-
 }
 
 //Setters
