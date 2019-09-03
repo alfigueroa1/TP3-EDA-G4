@@ -44,7 +44,7 @@ public:
 	void updateSpeed(Bird& b,int direction);
 	void randSpeed(Bird& b);
 	double getRandomJiggle(double randomJiggleLimit_);
-	bool isInSight(Bird& b, uint width, uint height, double eyeSight); //Devuelve 1 si exito, sino devuelve 0.
+	bool isInSight(Bird& b, double eyeSight); //Devuelve 1 si exito, sino devuelve 0.
 
 private:
 

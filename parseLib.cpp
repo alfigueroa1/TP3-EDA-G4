@@ -11,7 +11,7 @@
 
  /************************************  parseCmdLine  ***********************************/
 int parseCmdLine(int argc, char* argv[], pCallback_t parseCallback, void* userData) {
-	int counter = 0, i = 1, parseFSM = INIT;
+	int counter = 0, i = 1;
 	for (i = 1; i < argc; i++) {									//Mientras hayan argumentos por analizar
 		if (counter == ERR_CODE) {
 

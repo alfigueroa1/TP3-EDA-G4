@@ -183,15 +183,20 @@ static int saveNumber(userData_t* pointerData, int opNumber, double number){
 			printf("Please enter a valid amount of birds.\n");
 	}
 	else if (opNumber == eyeSight) {
-		if ((number > 0) && (number <= MAX_EYE_SIGHT)) {
+		if ((number > 0.0) && (number <= MAX_EYE_SIGHT)) {
 			result = 1;
+			pointerData->eyeSight = number;
+		}
+		else if (number == 0) {
+			result = 1;
+			printf("eyeSight = 0.0!");
 			pointerData->eyeSight = number;
 		}
 		else 
 			printf("Please enter a valid eyeSight value.\n");
 	}
 	else if (opNumber == randomJiggleLimit) {
-		if ((number > 0) && (number <= MAX_JIGGLE_LIMIT)) {
+		if ((number >= 0.0) && (number <= MAX_JIGGLE_LIMIT)) {
 			result = 1;
 			pointerData->randomJiggleLimit = number;
 		}
