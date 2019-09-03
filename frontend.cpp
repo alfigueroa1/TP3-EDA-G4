@@ -172,7 +172,7 @@ static void drawBirds(ALLEGRO_BITMAP* drawList[DRAWABLES], Flock* flock) {
 }
 
 static void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
-	char birds[4];
+	char birds[5];
 	char mode[3];
 	char speed[5];
 	char jiggle[5];
