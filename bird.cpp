@@ -11,14 +11,15 @@
 * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
 ******************************************************************************/
 #define PI 3.14159265358979323846
-#define RADS(x) ((x)*(PI)/(180)) //Transforma un angulo de grados a radianes
+#define RADS(x) (((x)*(PI))/(180))	//Transforma un angulo de grados a radianes
+#define GRADS(x) (((x)*180)/(PI))	//Transforma un angulo de radianes a grados
 
 /*********************************************************************************
-						  GLOBAL FUNCTION DEFINITIONS
+						  CLASS METHOD DEFINITIONS
  ********************************************************************************/
 
 /**********************
-*	CONSTRUCTORS
+*	  CONSTRUCTORS
 ***********************/
 
 //Constructores
@@ -88,11 +89,6 @@ void Bird::setY(double y_) {
 	y = y_;
 }
 
-
-/**********************
-*	PRIVATE METHODS
-***********************/
-
 //Funciones
 void Bird::moveBird(Bird& b) {
 	
@@ -126,12 +122,10 @@ void Bird::updateSpeed(Bird& b, int direction) {
 
 	if (direction == UP_SPEED) {
 		if ((b.speed + SPEED) <= MAX_SPEED) {
-
 			b.speed = b.speed + (direction * SPEED);
 		}
 
 		else {
-
 			b.speed = MAX_SPEED;
 		}
 
@@ -139,12 +133,10 @@ void Bird::updateSpeed(Bird& b, int direction) {
 
 	if (direction == DOWN_SPEED) {
 		if ((b.speed - SPEED) >= 0) {
-
 			b.speed = b.speed + (direction * SPEED);
 		}
 		
 		else {
-
 			b.speed = 0;
 		}
 	}
@@ -156,8 +148,8 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 
 	for (uint i = 0; i < birdCount; i++)
 	{
-		double sumsin = sin(birds[i].getCurrentDir());
-		double sumcos = cos(birds[i].getCurrentDir());
+		double sumsin = sin(birds[i].getCurrentDir()); //Sin pajaro central
+		double sumcos = cos(birds[i].getCurrentDir()); //Cos pajaro central
 		uint counter = 1;
 		double newDir_ = 0;
 
@@ -169,13 +161,19 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 			counter++;	//Aumento contador de pajaros
 		}
 
-		newDir_ = atan2((sumsin / counter), (sumcos / counter)) - getRandomJiggle(randomJiggleLimit) + getRandomJiggle(randomJiggleLimit); //Formula para calcular el promedio de los angulos 
-		if (newDir_ < 0)
+		newDir_ = GRADS(atan2((sumsin / counter), (sumcos / counter))) + getRandomJiggle(randomJiggleLimit); //Formula para calcular el promedio de los angulos
+
+		while (newDir_ < 0) //Si el angulo es negativo
 		{
-			newDir_ = 360 - newDir_;
+			newDir_ = 360 + newDir_;	//Le sumo 360
 		}
 
-		birds[i].setNewDir(newDir_);
+		while (newDir_ >= 360) //Si el angulo es mayot o igual a 360
+		{
+			newDir_ = newDir_ - 360;	//Le resto 360
+		}
+
+		birds[i].setNewDir(newDir_); //Guarda la nueva direccion
 	}
 }
 
@@ -196,9 +194,9 @@ double Bird::getRandomJiggle(double randomJiggleLimit_) {
 
 	do {
 
-		rndJiggle = (rand() / (double)RAND_MAX) * randomJiggleLimit_;	//Genera un RandomJiggle aleatorio
+		rndJiggle = ((rand() / (double)RAND_MAX) * (2 * randomJiggleLimit_)) - randomJiggleLimit_;	//Genera un RandomJiggle aleatorio
 
-	} while (rndJiggle > randomJiggleLimit_);
+	} while (rndJiggle > randomJiggleLimit_ || rndJiggle < -randomJiggleLimit_);
 
 	return rndJiggle;
 }

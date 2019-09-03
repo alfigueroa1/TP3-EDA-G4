@@ -11,8 +11,12 @@
 using namespace std;
 
  /*********************************************************************************
-						   GLOBAL FUNCTION DEFINITIONS
+						   CLASS METHOD DEFINITIONS
   ********************************************************************************/
+
+  /**********************
+  *	   CONSTRUCTORS
+  ***********************/
 
 //Constructor
 Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_, modeType mode_) {
@@ -22,6 +26,10 @@ Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_, mode
 	birds = NULL;
 	mode = mode_;
 }
+
+/**********************
+*	 PUBLIC METHODS
+***********************/
 
 //Getters
 Bird* Flock::getBird () { 
