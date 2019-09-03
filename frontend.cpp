@@ -85,7 +85,7 @@ bool handleBirdGraph(Flock* flock) {
 			handleKeyInputs(keyPressed, flock);
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			break;
+			ok = false;
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 			handleKeyPress(ev, keyPressed, true, ok);
