@@ -28,7 +28,7 @@
   ******************************************************************************/
 static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData);
 static void printHelpText(void);
-
+static void checkMode(Flock& flock);
 /*********************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
@@ -46,30 +46,20 @@ int main(int argc, char** argv) {
 
 	//Si hubo errores en el input o iniciando el front termina el programa
 	if (!initializeFrontend() || (checkInputs(argc, argv, pToCallback, &inputData) == ERROR)) {
-
 		return ERROR;
 	}
 
 	//Inicializa Flock con los dtaos correspondientes
 	Flock flock(inputData.birds, inputData.eyeSight, inputData.randomJiggleLimit, inputData.mode);
-
 	//Crea la paravada
 	Bird* birdStarter = flock.createBirds();
 	if (birdStarter == NULL) {
-
 		printf("Could not allocate memory for Flock\n");
 		return ERROR;
 	}
+
 	flock.setBird(birdStarter); //Puntero a la parvada
-
-	//Si es el modo 2, genera velocidades aleatorias
-	if (flock.getMode() == MODE2)
-	{
-		for (uint i = 0; i < flock.getBirdCount(); i++) {
-			(flock.getBird() + i)->randSpeed(flock.getBird()[i]);
-		}
-	}
-
+	checkMode(flock);
 	//Empieza la simulacion
 	while (run) {
 
@@ -87,6 +77,17 @@ int main(int argc, char** argv) {
  /*********************************************************************************
 						LOCAL FUNCTION DEFINITIONS
  *********************************************************************************/
+static void checkMode(Flock& flock) {
+	//Si es el modo 2, genera velocidades aleatorias
+	if (flock.getMode() == MODE2)
+	{
+		for (uint i = 0; i < flock.getBirdCount(); i++) {
+			(flock.getBird() + i)->randSpeed(flock.getBird()[i]);
+		}
+	}
+	return;
+}
+
 static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData) {
 
 	bool ret = FALSE;
