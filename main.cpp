@@ -20,8 +20,6 @@
 #define ERROR 0
 #define TRUE 1
 #define FALSE 0
-#define RUNNING 1
-#define OVER 0
 
  /*******************************************************************************
   * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
@@ -39,8 +37,6 @@ static void checkMode(Flock& flock);
 int main(int argc, char** argv) {
 
 	srand((unsigned int)time(NULL));
-
-	int run = RUNNING;
 	pCallback_t pToCallback = parseCallback;
 	userData_t inputData;
 
@@ -51,23 +47,11 @@ int main(int argc, char** argv) {
 
 	//Inicializa Flock con los dtaos correspondientes
 	Flock flock(inputData.birds, inputData.eyeSight, inputData.randomJiggleLimit, inputData.mode);
-	//Crea la paravada
-	Bird* birdStarter = flock.createBirds();
-	if (birdStarter == NULL) {
-		printf("Could not allocate memory for Flock\n");
-		return ERROR;
-	}
 
-	flock.setBird(birdStarter); //Puntero a la parvada
 	checkMode(flock);
 	//Empieza la simulacion
-	while (run) {
 
-		run = handleBirdGraph(&flock);
-		flock.flockStep();
-	}
-
-	flock.destroyBirds(); //Destruye la paravada
+	handleBirdGraph(&flock);
 
 	return 0;
 }
@@ -118,7 +102,7 @@ static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData
 
 static void printHelpText() {
 	printf("****************************** HELP TEXT ******************************\n\n");
-	printf("Valid keys: -birds (a value between 0 and %d)\n", MAX_BIRDS);
+	printf("Valid keys: -birds (a value between 1 and %d)\n", MAX_BIRDS);
 	printf("	    -eyeSight (a double between 0 and %.2f)\n", MAX_EYE_SIGHT);
 	printf("	    -randomJiggleLimit (a double between 0 and %.2f)\n", MAX_JIGGLE_LIMIT);
 	printf("	    -mode (1 or 2)\n");

@@ -23,7 +23,7 @@ Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_, mode
 	birdCount = birdCount_;
 	eyeSight = eyeSight_;
 	randomJiggleLimit = randomJiggleLimit_;
-	birds = NULL;
+	birds = new(std::nothrow)Bird[birdCount];
 	mode = mode_;
 }
 
@@ -73,19 +73,8 @@ void Flock::setBird(Bird* bird_) {
 	birds = bird_;
 }
 
-Bird* Flock::createBirds() {
 
-	birds = new(std::nothrow)Bird[birdCount];
-
-	if (birds == NULL) {
-		printf("Could not allocate memory for Flock\n");
-	}
-
-	return birds;
-
-}
-
-void Flock::destroyBirds() {
+Flock::~Flock() {
 	if (birds != NULL) {
 
 		delete[]birds;
@@ -98,9 +87,9 @@ void Flock::flockStep() {
 	}
 
 	for (uint i = 0; i < birdCount; i++) {
-		birds[i].setCurrentDir(birds[i].getNewDir()); //Setea la nueva direccion como principal
 
 		birds[i].moveBird(birds[i]); //Mueve todos los pajaros
 
+		birds[i].setCurrentDir(birds[i].getNewDir()); //Setea la nueva direccion como principal
 	}
 }
