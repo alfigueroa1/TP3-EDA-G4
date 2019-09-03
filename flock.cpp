@@ -25,6 +25,11 @@ Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_, mode
 	randomJiggleLimit = randomJiggleLimit_;
 	birds = new(std::nothrow)Bird[birdCount];
 	mode = mode_;
+
+	if (mode == MODE2 && birds != NULL) {
+		for (uint i = 0; i < birdCount; i++)
+			(birds + i)->randSpeed(birds[i]);
+	}
 }
 
 /**********************

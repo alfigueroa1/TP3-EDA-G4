@@ -18,15 +18,13 @@
 * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
 ******************************************************************************/
 #define ERROR 0
-#define TRUE 1
-#define FALSE 0
 
  /*******************************************************************************
   * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
   ******************************************************************************/
 static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData);
 static void printHelpText(void);
-static void checkMode(Flock& flock);
+
 /*********************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
@@ -37,20 +35,17 @@ static void checkMode(Flock& flock);
 int main(int argc, char** argv) {
 
 	srand((unsigned int)time(NULL));
-	pCallback_t pToCallback = parseCallback;
 	userData_t inputData;
 
 	//Si hubo errores en el input o iniciando el front termina el programa
-	if (!initializeFrontend() || (checkInputs(argc, argv, pToCallback, &inputData) == ERROR)) {
+	if (!initializeFrontend() || (checkInputs(argc, argv, parseCallback, &inputData) == ERROR)) {
 		return ERROR;
 	}
 
 	//Inicializa Flock con los dtaos correspondientes
 	Flock flock(inputData.birds, inputData.eyeSight, inputData.randomJiggleLimit, inputData.mode);
 
-	checkMode(flock);
 	//Empieza la simulacion
-
 	handleBirdGraph(&flock);
 
 	return 0;
@@ -61,20 +56,10 @@ int main(int argc, char** argv) {
  /*********************************************************************************
 						LOCAL FUNCTION DEFINITIONS
  *********************************************************************************/
-static void checkMode(Flock& flock) {
-	//Si es el modo 2, genera velocidades aleatorias
-	if (flock.getMode() == MODE2)
-	{
-		for (uint i = 0; i < flock.getBirdCount(); i++) {
-			(flock.getBird() + i)->randSpeed(flock.getBird()[i]);
-		}
-	}
-	return;
-}
 
 static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData) {
 
-	bool ret = FALSE;
+	bool ret = false;
 
 	if (parseCmdLine(argc, argv, pToCallback, inputData) == ERR_CODE) {
 		printf("INPUT ERROR\n");
@@ -91,7 +76,7 @@ static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData
 	else if (inputData->mode == ERRORMODE) {
 		printf("PLEASE ENTER A VALID MODE VALUE\n");
 	}
-	else ret = TRUE;
+	else ret = true;
 
 	if (!ret) {
 		printHelpText();

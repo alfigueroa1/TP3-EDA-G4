@@ -12,7 +12,7 @@
 ******************************************************************************/
 #define MAX_H				100
 #define MAX_W				70
-#define MAX_BIRDS			1000
+#define MAX_BIRDS			10000
 #define MAX_EYE_SIGHT		100.0
 #define MAX_JIGGLE_LIMIT	100.0
 
