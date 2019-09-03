@@ -31,7 +31,10 @@ Bird::Bird() {
 		y = (rand() / ((double)RAND_MAX)) * (double)MAX_HEIGHT;	//Genera posicion en Y aleatoria
 	} while (y >= MAX_WIDTH);
 
-	currentDir = ((double)rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
+	do {
+		currentDir = ((double)rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
+	} while (currentDir >= 360);
+
 	speed = 1;	//Velocidad default
 	newDir = 0;
 
