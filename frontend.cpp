@@ -185,7 +185,7 @@ static void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
 
 
 	al_draw_filled_rectangle(0, 0, SCREEN_W, UPPER_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro superior
-	al_draw_filled_rectangle(0, SCREEN_H - LOWER_H, SCREEN_W, SCREEN_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
+	al_draw_filled_rectangle(0, SCREEN_H - LOWER_H+30, SCREEN_W, SCREEN_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
 	//al_flip_display();
 
 	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Bird Count:");
@@ -203,14 +203,14 @@ static void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
 	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 20, 0, "Eye Sight:");
 	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2+90, 20, 0, sight);
 
-	al_draw_text(font, al_map_rgb(255, 255, 255), 0, SCREEN_H - LOWER_H, 0, "Controls:");
-	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H, 0, "-1 or 2 for MODE:");
-	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H +20, 0, "-UP: Speed Up");
-	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H +40, 0, "-DOWN: Speed Down");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H, 0, "-LEFT: Eye Sight Down");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+20, 0, "-RIGHT: Eye Sight Up");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+40, 0, "-Q: Random Jiggle Down");
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+60, 0, "-W: Random Jiggle Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 0, SCREEN_H - LOWER_H +30, 0, "Controls:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H + 30, 0, "-1 or 2 for MODE:");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H +50, 0, "-UP: Speed Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), 80, SCREEN_H - LOWER_H +70, 0, "-DOWN: Speed Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H + 30, 0, "-LEFT: Eye Sight Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+50, 0, "-RIGHT: Eye Sight Up");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+70, 0, "-Q: Random Jiggle Down");
+	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - LOWER_H+90, 0, "-W: Random Jiggle Up");
 
 	return;
 }

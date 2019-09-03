@@ -21,8 +21,8 @@
 
 #define WORLD_H		70*UNIT
 #define WORLD_W		100*UNIT
-#define UPPER_H		100
-#define LOWER_H		100
+#define UPPER_H		70
+#define LOWER_H		120
 #define SCREEN_H	(WORLD_H + UPPER_H + LOWER_H)
 #define SCREEN_W	WORLD_W
 
