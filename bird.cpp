@@ -156,9 +156,9 @@ void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double random
 
 	for (uint i = 0; i < birdCount; i++)
 	{
-		double sumsin = 0;
-		double sumcos = 0;
-		uint counter = 0;
+		double sumsin = sin(birds[i].getCurrentDir());
+		double sumcos = cos(birds[i].getCurrentDir());
+		uint counter = 1;
 		double newDir_ = 0;
 
 		if (isInSight(birds[i], MAX_WIDTH, MAX_HEIGHT, eyeSight))
@@ -187,11 +187,11 @@ void Bird::randSpeed(Bird& bird)
 
 bool Bird::isInSight(Bird& bird, uint width, uint height, double eyeSight)
 {
-	return 1;
+	return 0;
 
 }
 
-double getRandomJiggle(double randomJiggleLimit_) {
+double Bird::getRandomJiggle(double randomJiggleLimit_) {
 	double rndJiggle;
 
 	do {
