@@ -34,11 +34,11 @@ Bird::Bird() {
 	} while (y >= MAX_WIDTH);
 
 	do {
-		currentDir = ((double)rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
+		currentDir = (rand() / (double)RAND_MAX) * 360;	//Genera angulo aleatorio
 	} while (currentDir >= 360);
 
 	speed = 1;	//Velocidad default
-	newDir = 0;
+	newDir = currentDir;
 
 }
 
@@ -147,38 +147,36 @@ void Bird::updateSpeed(Bird& b, int direction) {
 
 void Bird::updateDir(Bird *birds, uint birdCount, double eyeSight, double randomJiggleLimit) {
 
-	for (uint j = 0; j < birdCount; j++) {
-		double newDir_ = 0;
-		for (uint i = 0; i < birdCount; i++)
+	double newDir_ = 0;
+	double sumsin = 0;
+	double sumcos = 0;
+	uint counter = 0;
+
+	for (uint i = 0; i < birdCount; i++)
+	{
+		if (isInSight(birds[i], eyeSight))
 		{
-			double sumsin = 0;
-			double sumcos = 0;
-			uint counter = 0;
+			sumsin += sin(birds[i].getCurrentDir());	//Suma de todos los sin de los pajaros en radio
+			sumcos += cos(birds[i].getCurrentDir());	//Suma de todos los cos de los pajaros en radio
 
-			if (isInSight(birds[i], eyeSight))
-			{
-				sumsin += sin(birds[i].getCurrentDir());	//Suma de todos los sin de los pajaros en radio
-				sumcos += cos(birds[i].getCurrentDir());	//Suma de todos los cos de los pajaros en radio
-
-				counter++;	//Aumento contador de pajaros
-			}
-
-			newDir_ = GRADS(atan2((sumsin / counter), (sumcos / counter))) + getRandomJiggle(randomJiggleLimit); //Formula para calcular el promedio de los angulos
-
-			while (newDir_ < 0) //Si el angulo es negativo
-			{
-				newDir_ = 360 + newDir_;	//Le sumo 360
-			}
-
-			while (newDir_ >= 360) //Si el angulo es mayot o igual a 360
-			{
-				newDir_ = newDir_ - 360;	//Le resto 360
-			}
-
+			counter++;	//Aumento contador de pajaros
 		}
-		birds[j].setNewDir(newDir_); //Guarda la nueva direccion
+
 	}
 
+	newDir_ = GRADS(atan2((sumsin / counter), (sumcos / counter))) + getRandomJiggle(randomJiggleLimit); //Formula para calcular el promedio de los angulos
+	
+	while (newDir_ < 0) //Si el angulo es negativo
+	{
+		newDir_ = 360 + newDir_;	//Le sumo 360
+	}
+
+	while (newDir_ >= 360) //Si el angulo es mayot o igual a 360
+	{
+		newDir_ = newDir_ - 360;	//Le resto 360
+	}
+	
+	setNewDir(newDir_); //Guarda la nueva direccion
 
 }
 
@@ -188,19 +186,20 @@ void Bird::randSpeed(Bird& bird)
 	bird.speed = (rand() / ((double)RAND_MAX)) * (double)MAX_SPEED;	//Genera velocidades aleatorias para los pajaros
 }
 
-bool Bird::isInSight(Bird& bird, double eyeSight)
-{
+bool Bird::isInSight(Bird& bird, double eyeSight) {
 	double dx = abs(bird.getX() - x);
 	double dy = abs(bird.getY() - y);
 	bool ok = false;
-	if (dx > (double)MAX_WIDTH)
+
+	if (dx > (double)MAX_WIDTH/2)
 		dx = (double)MAX_WIDTH - dx;
 
-	if (dy > (double)MAX_HEIGHT)
+	if (dy > (double)MAX_HEIGHT/2)
 		dy = (double)MAX_HEIGHT - dy;
 
-	if (sqrt(dx * dx + dy * dy) <= eyeSight)
+	if (dx * dx + dy * dy <= eyeSight * eyeSight)
 		ok = true;
+
 	return ok;
 }
 
@@ -208,7 +207,6 @@ double Bird::getRandomJiggle(double randomJiggleLimit_) {
 	double rndJiggle;
 
 	do {
-
 		rndJiggle = ((rand() / (double)RAND_MAX) * (2 * randomJiggleLimit_)) - randomJiggleLimit_;	//Genera un RandomJiggle aleatorio
 
 	} while (rndJiggle > randomJiggleLimit_ || rndJiggle < -randomJiggleLimit_);

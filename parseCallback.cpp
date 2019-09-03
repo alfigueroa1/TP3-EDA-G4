@@ -183,7 +183,7 @@ static int saveNumber(userData_t* pointerData, int opNumber, double number){
 			printf("Please enter a valid amount of birds.\n");
 	}
 	else if (opNumber == eyeSight) {
-		if ((number > 0.0) && (number <= MAX_EYE_SIGHT)) {
+		if ((number >= 0.0) && (number <= MAX_EYE_SIGHT)) {
 			result = 1;
 			pointerData->eyeSight = number;
 		}

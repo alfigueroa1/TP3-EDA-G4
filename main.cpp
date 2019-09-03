@@ -38,6 +38,8 @@ static void printHelpText(void);
 	**********************************************************/
 int main(int argc, char** argv) {
 
+	srand((unsigned int)time(NULL));
+
 	int run = RUNNING;
 	pCallback_t pToCallback = parseCallback;
 	userData_t inputData;
@@ -47,8 +49,6 @@ int main(int argc, char** argv) {
 
 		return ERROR;
 	}
-
-	srand((unsigned int)time(NULL));
 
 	//Inicializa Flock con los dtaos correspondientes
 	Flock flock(inputData.birds, inputData.eyeSight, inputData.randomJiggleLimit, inputData.mode);
