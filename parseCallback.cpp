@@ -83,12 +83,10 @@ int parseCallback(char* key, char* value, void* userData) {
 		else {
 			if ((strcmp("num", opciones[TIPOS][keyPlace]) == 0) && (strcmp("any", opciones[LISTAS][keyPlace])) == 0)  	//si el valor debe ser un número cualquiera
 			{
-				if ((strcmp("birds", opciones[CLAVES][keyPlace]) == 0) && (valor = checkForZero(value)) == 0) {			//
-				}										//si se piden 0 pajaros, es un error
-				else if ((valor = atof(value)) == 0) {}	//si no, se guarda el numero ingresado con atof (devuelve 0 si no se pudo hacer la conversión--> caso valor inválido)
-				else if (saveNumber(pointerData, keyPlace, valor) == 0) {}
-				else
-					ret = 1;
+				if ((valor = checkForZero(value)) == 0) {}	//si es cero se guarda
+				else if ((valor = atof(value)) == 0) {} 	//si no, se guarda el numero ingresado con atof (devuelve 0 si no se pudo hacer la conversión--> caso valor inválido)
+				saveNumber(pointerData, keyPlace, valor);
+				ret = 1;
 			}
 		}
 	}	
@@ -185,11 +183,6 @@ static int saveNumber(userData_t* pointerData, int opNumber, double number){
 	else if (opNumber == eyeSight) {
 		if ((number >= 0.0) && (number <= MAX_EYE_SIGHT)) {
 			result = 1;
-			pointerData->eyeSight = number;
-		}
-		else if (number == 0) {
-			result = 1;
-			printf("eyeSight = 0.0!");
 			pointerData->eyeSight = number;
 		}
 		else 

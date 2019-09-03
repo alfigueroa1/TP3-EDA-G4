@@ -185,7 +185,7 @@ static void drawHUD(Flock* flock, ALLEGRO_FONT* font) {
 
 
 	al_draw_filled_rectangle(0, 0, SCREEN_W, UPPER_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro superior
-	al_draw_filled_rectangle(0, SCREEN_H - LOWER_H+30, SCREEN_W, SCREEN_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
+	al_draw_filled_rectangle(0, SCREEN_H - LOWER_H+11, SCREEN_W, SCREEN_H, al_map_rgb(0, 0, 0));		//Dibuja el rectangulo negro inferior
 	//al_flip_display();
 
 	al_draw_text(font, al_map_rgb(255, 255, 255), 0, 0, 0, "Bird Count:");
