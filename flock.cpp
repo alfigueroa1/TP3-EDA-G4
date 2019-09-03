@@ -92,20 +92,15 @@ void Flock::destroyBirds() {
 	}
 }
 
-void Flock::flockStep()
-{
-	//Calcula nueva direccion para toda la parvada
+void Flock::flockStep() {
 	for (uint i = 0; i < birdCount; i++) {
-		birds[i].updateDir(birds, birdCount, eyeSight, randomJiggleLimit);
+		birds[i].updateDir(birds, birdCount, eyeSight, randomJiggleLimit); 	//Calcula nueva direccion para toda la parvada
 	}
 
-	//Setea la nueva direccion como principal
 	for (uint i = 0; i < birdCount; i++) {
-		birds[i].setCurrentDir(birds[i].getNewDir());
-	}
+		birds[i].setCurrentDir(birds[i].getNewDir()); //Setea la nueva direccion como principal
 
-	//Mueve todos los pajaros
-	for (uint i = 0; i < birdCount; i++) {
-		birds[i].moveBird(birds[i]);
+		birds[i].moveBird(birds[i]); //Mueve todos los pajaros
+
 	}
 }
