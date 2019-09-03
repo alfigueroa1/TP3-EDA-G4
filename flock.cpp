@@ -3,18 +3,24 @@
  ******************************************************************************/
 #include <stdio.h>
 #include "flock.h"
+ //
+#include <new>
+#include <cstdio>
+#include <cstdlib>
+//
+using namespace std;
 
  /*********************************************************************************
 						   GLOBAL FUNCTION DEFINITIONS
   ********************************************************************************/
 
 //Constructor
-Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_) {
+Flock::Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_, modeType mode_) {
 	birdCount = birdCount_;
 	eyeSight = eyeSight_;
 	randomJiggleLimit = randomJiggleLimit_;
 	birds = NULL;
-	mode = ERRORMODE;
+	mode = mode_;
 }
 
 //Getters
@@ -59,6 +65,24 @@ void Flock::setBird(Bird* bird_) {
 	birds = bird_;
 }
 
+Bird* Flock::createBirds() {
+
+	birds = new(std::nothrow)Bird[birdCount];
+
+	if (birds == NULL) {
+		printf("Could not allocate memory for Flock\n");
+	}
+
+	return birds;
+
+}
+
+void Flock::destroyBirds() {
+	if (birds != NULL) {
+
+		delete[]birds;
+	}
+}
 
 void Flock::flockStep()
 {

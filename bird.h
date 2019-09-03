@@ -39,8 +39,6 @@ public:
 	void setX(double x_);
 	void setY(double y_);
 
-	Bird* createBird(Bird* birds, uint birdCount);	//Devuelve NULL si hay error
-	void destroyBirds(Bird* birds);
 	void moveBird(Bird& b);
 	void updateDir(Bird* birds, uint birdCount, double eyeSight, double randomJiggleLimit);
 	void updateSpeed(Bird& b,int direction);

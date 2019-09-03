@@ -14,86 +14,104 @@
 #include "parseLib.h"
 #include "frontend.h"
 
-using namespace std;
+/*******************************************************************************
+* CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+******************************************************************************/
+#define ERROR 0
+#define TRUE 1
+#define FALSE 0
+#define RUNNING 1
+#define OVER 0
 
  /*******************************************************************************
   * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
   ******************************************************************************/
 static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData);
 static void printHelpText(void);
+
 /*********************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
  ********************************************************************************/
-int main(int argc, char** argv) {
-	pCallback_t pToCallback = parseCallback;
-	userData_t inputData;
-	//if (!initializeFrontend())
-	//	return 0;
-
-	srand((unsigned int)time(NULL));
-
-	if (checkInputs(argc, argv, pToCallback, &inputData) == 0)
-		return 0;
-
-	Flock flock(inputData.birds, inputData.eyeSight, inputData.randomJiggleLimit);
-	flock.setMode(inputData.mode);
-
-	Bird* birdStarter = new(std::nothrow)Bird[inputData.birds];
-	if (birdStarter == NULL) {
-		printf("Could not allocate memory for Flock\n");
-		return 0;
-	}
-	flock.setBird(birdStarter);
-	
-	for (int i = 0; i < inputData.birds; i++)
-	{
-		printf("\n Coords = (%f,%f)", birdStarter[i].getX(), birdStarter[i].getY());
-	}
-
-	handleBirdGraph(&flock);
-
-	for (int i = 0; i < inputData.birds; i++)
-	{
-		printf("\n Speed = %f", birdStarter[i].getSpeed());
-	}
 
 	/*********************************************************
 	*		MAIN TENTATIVO
 	**********************************************************/
-/*	//Llamar constructor de flock con los datos
-	//Construir birds segun datos
-	//while(run){
-		graph();
-		simulationStep();
-		getKeyboard();			?
-	}
-	//destroyEverything();
-	*/
+int main(int argc, char** argv) {
 
-	delete[]birdStarter;
-	printf("CORRECT EXECUTION!\n");
+	int run = RUNNING;
+	pCallback_t pToCallback = parseCallback;
+	userData_t inputData;
+
+	//Si hubo errores en el input o iniciando el front termina el programa
+	if (!initializeFrontend() || (checkInputs(argc, argv, pToCallback, &inputData) == ERROR)) {
+
+		return ERROR;
+	}
+
+	srand((unsigned int)time(NULL));
+
+	//Inicializa Flock con los dtaos correspondientes
+	Flock flock(inputData.birds, inputData.eyeSight, inputData.randomJiggleLimit, inputData.mode);
+
+	//Crea la paravada
+	Bird* birdStarter = flock.createBirds();
+	if (birdStarter == NULL) {
+
+		printf("Could not allocate memory for Flock\n");
+		return ERROR;
+	}
+	flock.setBird(birdStarter); //Puntero a la parvada
+
+	//Si es el modo 2, genera velocidades aleatorias
+	if (flock.getMode() == MODE2)
+	{
+		for (uint i = 0; i < flock.getBirdCount(); i++) {
+			(flock.getBird() + i)->randSpeed(flock.getBird()[i]);
+		}
+	}
+
+	//Empieza la simulacion
+	while (run) {
+
+		run = handleBirdGraph(&flock);
+		flock.flockStep();
+	}
+
+	flock.destroyBirds(); //Destruye la paravada
+
 	return 0;
 }
+
 
 
  /*********************************************************************************
 						LOCAL FUNCTION DEFINITIONS
  *********************************************************************************/
 static bool checkInputs(int argc, char** argv, pCallback_t pToCallback, userData_t* inputData) {
-	bool ret = 0;
-	if (parseCmdLine(argc, argv, pToCallback, inputData) == -1)
+
+	bool ret = FALSE;
+
+	if (parseCmdLine(argc, argv, pToCallback, inputData) == ERR_CODE) {
 		printf("INPUT ERROR\n");
-	else if (inputData->birds == ERR_CODE)
+	}
+	else if (inputData->birds == ERR_CODE) {
 		printf("PLEASE ENTER A VALID BIRDS VALUE\n");
-	else if (inputData->eyeSight == (double)ERR_CODE) 
+	}
+	else if (inputData->eyeSight == (double)ERR_CODE) {
 		printf("PLEASE ENTER A VALID EYESIGHT VALUE\n");
-	else if (inputData->randomJiggleLimit == (double)ERR_CODE)
+	}
+	else if (inputData->randomJiggleLimit == (double)ERR_CODE) {
 		printf("PLEASE ENTER A VALID JIGGLE LIMIT VALUE\n");
-	else if (inputData->mode == ERRORMODE)
+	}
+	else if (inputData->mode == ERRORMODE) {
 		printf("PLEASE ENTER A VALID MODE VALUE\n");
-	else ret = 1;
-	if (!ret)
+	}
+	else ret = TRUE;
+
+	if (!ret) {
 		printHelpText();
+	}
+
 	return ret;
 }
 

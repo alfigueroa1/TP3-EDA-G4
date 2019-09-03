@@ -103,7 +103,7 @@ bool handleBirdGraph(Flock* flock) {
 			drawHUD(flock, font);
 			drawBirds(drawList, flock);
 
-			//simStep();
+			flock->flockStep();
 			al_flip_display();																//se grafica la pantalla
 		}
 	}

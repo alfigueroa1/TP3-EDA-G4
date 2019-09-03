@@ -6,12 +6,6 @@
 #include <math.h>
 #include "bird.h"
 #include "flock.h"
-//
-#include <new>
-#include <cstdio>
-#include <cstdlib>
-//
-using namespace std;
 
 /*******************************************************************************
 * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -97,18 +91,6 @@ void Bird::setY(double y_) {
 ***********************/
 
 //Funciones
-Bird* Bird::createBird(Bird *birds, uint birdCount) {
-
-	birds = new(std::nothrow)Bird[birdCount];
-
-	if (birds == NULL) {
-		printf("Could not allocate memory for Flock\n");
-	}
-
-	return birds;
-
-}
-
 void Bird::moveBird(Bird& b) {
 	
 	b.x = b.x + b.speed * cos(b.getCurrentDir()); //Calcula posicion en X
@@ -206,21 +188,14 @@ bool Bird::isInSight(Bird& bird, uint width, uint height, double eyeSight)
 
 }
 
-void Bird::destroyBirds(Bird* birds) {
-	if (birds != NULL) {
-
-		delete[]birds;
-	}
-}
-
 double getRandomJiggle(double randomJiggleLimit_) {
 	double rndJiggle;
 
 	do {
 
-		rndJiggle = (rand() / ((double)RAND_MAX)) * (double)MAX_WIDTH;	//Genera un RandomJiggle aleatorio
+		rndJiggle = (rand() / (double)RAND_MAX) * randomJiggleLimit_;	//Genera un RandomJiggle aleatorio
 
-	} while (rndJiggle >= randomJiggleLimit_);
+	} while (rndJiggle > randomJiggleLimit_);
 
 	return rndJiggle;
 }

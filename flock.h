@@ -19,19 +19,21 @@ class Flock {
 
 public:
 
-	Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_);
+	Flock (uint birdCount_, double eyeSight_, double randomJiggleLimit_, modeType mode_);
 
 	Bird* getBird ();
 	uint getBirdCount ();
 	double getEyeSight ();
 	double getRandomJiggleLimit ();
 	modeType getMode ();
-
 	void setEyeSight(double eyeSight_);	
 	void setRandomJiggleLimit(double randomJiggleLimit_);
 	void setBirdCount(uint birdCount_);
 	void setMode(modeType mode_);
 	void setBird(Bird* bird_);
+
+	Bird* createBirds();	//Devuelve NULL si hay error
+	void destroyBirds();
 	void flockStep();
 
 private:

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef FRONTEND_H
+#define FRONTEND_H
+
 /***************************************************************************//**
   @file     +frontend.h+
   @brief    +Contiene funciones para el funcionamiento del frontend visual.+
@@ -11,6 +13,7 @@
 #include "flock.h"
 #include "bird.h"
 #include "types.h"
+
  /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -28,11 +31,11 @@
 #define CROW_CENTER 15
 
 #define FPS	60
- /*******************************************************************************
-  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
-  ******************************************************************************/
+
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 bool handleBirdGraph(Flock* flock);
 bool initializeFrontend(void);
+
+#endif // !FRONTEND_H
